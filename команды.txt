@@ -1,0 +1,59 @@
+[1/11] CameraInit
+ - commandLine: aliceVision_cameraInit  --sensorDatabase "C:\Users\DIMA\Downloads\meshroom-2019-2-0\Meshroom-2019.2.0\aliceVision\share\aliceVision\cameraSensors.db" --defaultFieldOfView 45.0 --groupCameraFallback folder --verboseLevel info --output "C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/CameraInit/15efece8fd9e4ff2049fecb4a7f7dc221ad034bb/cameraInit.sfm" --allowSingleView 1  --input "C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/CameraInit/15efece8fd9e4ff2049fecb4a7f7dc221ad034bb//viewpoints.sfm"
+ - logFile: C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/CameraInit/15efece8fd9e4ff2049fecb4a7f7dc221ad034bb/log
+ - elapsed time: 0:00:00.665578
+
+[2/11] FeatureExtraction
+ - commandLine: aliceVision_featureExtraction  --input "C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/CameraInit/15efece8fd9e4ff2049fecb4a7f7dc221ad034bb/cameraInit.sfm" --describerTypes sift --describerPreset normal --forceCpuExtraction True --verboseLevel info --output "C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/FeatureExtraction/44aef0ae2a827d580cc6dc26f5848ca152afec26" --rangeStart 0 --rangeSize 40
+ - logFile: C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/FeatureExtraction/44aef0ae2a827d580cc6dc26f5848ca152afec26/0.log
+ - elapsed time: 0:00:15.088619
+
+[3/11] ImageMatching
+ - commandLine: aliceVision_imageMatching  --input "C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/CameraInit/15efece8fd9e4ff2049fecb4a7f7dc221ad034bb/cameraInit.sfm" --featuresFolders "C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/FeatureExtraction/44aef0ae2a827d580cc6dc26f5848ca152afec26" --tree "C:\Users\DIMA\Downloads\meshroom-2019-2-0\Meshroom-2019.2.0\aliceVision\share\aliceVision\vlfeat_K80L3.SIFT.tree" --weights "" --minNbImages 200 --maxDescriptors 500 --nbMatches 50 --verboseLevel info --output "C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/ImageMatching/193b84df4fdd6183b143c700ac8139d35c395285/imageMatches.txt"
+ - logFile: C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/ImageMatching/193b84df4fdd6183b143c700ac8139d35c395285/log
+ - elapsed time: 0:00:00.348463
+
+[4/11] FeatureMatching
+ - commandLine: aliceVision_featureMatching  --input "C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/CameraInit/15efece8fd9e4ff2049fecb4a7f7dc221ad034bb/cameraInit.sfm" --featuresFolders "C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/FeatureExtraction/44aef0ae2a827d580cc6dc26f5848ca152afec26" --imagePairsList "C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/ImageMatching/193b84df4fdd6183b143c700ac8139d35c395285/imageMatches.txt" --describerTypes sift --photometricMatchingMethod ANN_L2 --geometricEstimator acransac --geometricFilterType fundamental_matrix --distanceRatio 0.8 --maxIteration 2048 --geometricError 0.0 --maxMatches 0 --savePutativeMatches False --guidedMatching False --exportDebugFiles False --verboseLevel info --output "C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/FeatureMatching/283b96fd609d0c2fba322fbb1bdc2324176fc92c" --rangeStart 0 --rangeSize 20
+ - logFile: C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/FeatureMatching/283b96fd609d0c2fba322fbb1bdc2324176fc92c/0.log
+ - elapsed time: 0:00:01.913012
+
+[5/11] StructureFromMotion
+ - commandLine: aliceVision_incrementalSfM  --input "C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/CameraInit/15efece8fd9e4ff2049fecb4a7f7dc221ad034bb/cameraInit.sfm" --featuresFolders "C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/FeatureExtraction/44aef0ae2a827d580cc6dc26f5848ca152afec26" --matchesFolders "C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/FeatureMatching/283b96fd609d0c2fba322fbb1bdc2324176fc92c" --describerTypes sift --localizerEstimator acransac --localizerEstimatorMaxIterations 4096 --localizerEstimatorError 0.0 --lockScenePreviouslyReconstructed False --useLocalBA True --localBAGraphDistance 1 --maxNumberOfMatches 0 --minInputTrackLength 2 --minNumberOfObservationsForTriangulation 2 --minAngleForTriangulation 3.0 --minAngleForLandmark 2.0 --maxReprojectionError 4.0 --minAngleInitialPair 5.0 --maxAngleInitialPair 40.0 --useOnlyMatchesFromInputFolder False --useRigConstraint True --lockAllIntrinsics False --initialPairA "" --initialPairB "" --interFileExtension .abc --verboseLevel info --output "C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/StructureFromMotion/ad1c4ee4550b3e5bc0d566ddb6f2017aced7b5e0/sfm.abc" --outputViewsAndPoses "C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/StructureFromMotion/ad1c4ee4550b3e5bc0d566ddb6f2017aced7b5e0/cameras.sfm" --extraInfoFolder "C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/StructureFromMotion/ad1c4ee4550b3e5bc0d566ddb6f2017aced7b5e0"
+ - logFile: C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/StructureFromMotion/ad1c4ee4550b3e5bc0d566ddb6f2017aced7b5e0/log
+ - elapsed time: 0:00:03.097091
+
+[6/11] PrepareDenseScene
+ - commandLine: aliceVision_prepareDenseScene  --input "C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/StructureFromMotion/ad1c4ee4550b3e5bc0d566ddb6f2017aced7b5e0/sfm.abc" --outputFileType exr --saveMetadata True --saveMatricesTxtFiles False --evCorrection False --verboseLevel info --output "C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/PrepareDenseScene/52b23db2a12a71d23518f6000a6c31f4abd5a88e" --rangeStart 0 --rangeSize 40
+ - logFile: C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/PrepareDenseScene/52b23db2a12a71d23518f6000a6c31f4abd5a88e/0.log
+ - elapsed time: 0:00:04.896322
+
+[7/11](1/2) DepthMap
+ - commandLine: aliceVision_depthMapEstimation  --input "C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/StructureFromMotion/ad1c4ee4550b3e5bc0d566ddb6f2017aced7b5e0/sfm.abc" --imagesFolder "C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/PrepareDenseScene/52b23db2a12a71d23518f6000a6c31f4abd5a88e" --downscale 2 --minViewAngle 2.0 --maxViewAngle 70.0 --sgmMaxTCams 10 --sgmWSH 4 --sgmGammaC 5.5 --sgmGammaP 8.0 --refineMaxTCams 6 --refineNSamplesHalf 150 --refineNDepthsToRefine 31 --refineNiters 100 --refineWSH 3 --refineSigma 15 --refineGammaC 15.5 --refineGammaP 8.0 --refineUseTcOrRcPixSize False --exportIntermediateResults False --nbGPUs 0 --verboseLevel info --output "C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/DepthMap/2e580a560266618e84cf1c0d2e86f62c65c13645" --rangeStart 0 --rangeSize 3
+ - logFile: C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/DepthMap/2e580a560266618e84cf1c0d2e86f62c65c13645/0.log
+ - elapsed time: 0:00:52.521816
+
+[7/11](2/2) DepthMap
+ - commandLine: aliceVision_depthMapEstimation  --input "C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/StructureFromMotion/ad1c4ee4550b3e5bc0d566ddb6f2017aced7b5e0/sfm.abc" --imagesFolder "C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/PrepareDenseScene/52b23db2a12a71d23518f6000a6c31f4abd5a88e" --downscale 2 --minViewAngle 2.0 --maxViewAngle 70.0 --sgmMaxTCams 10 --sgmWSH 4 --sgmGammaC 5.5 --sgmGammaP 8.0 --refineMaxTCams 6 --refineNSamplesHalf 150 --refineNDepthsToRefine 31 --refineNiters 100 --refineWSH 3 --refineSigma 15 --refineGammaC 15.5 --refineGammaP 8.0 --refineUseTcOrRcPixSize False --exportIntermediateResults False --nbGPUs 0 --verboseLevel info --output "C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/DepthMap/2e580a560266618e84cf1c0d2e86f62c65c13645" --rangeStart 3 --rangeSize 3
+ - logFile: C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/DepthMap/2e580a560266618e84cf1c0d2e86f62c65c13645/1.log
+ - elapsed time: 0:00:16.691747
+
+[8/11] DepthMapFilter
+ - commandLine: aliceVision_depthMapFiltering  --input "C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/StructureFromMotion/ad1c4ee4550b3e5bc0d566ddb6f2017aced7b5e0/sfm.abc" --depthMapsFolder "C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/DepthMap/2e580a560266618e84cf1c0d2e86f62c65c13645" --minViewAngle 2.0 --maxViewAngle 70.0 --nNearestCams 10 --minNumOfConsistentCams 3 --minNumOfConsistentCamsWithLowSimilarity 4 --pixSizeBall 0 --pixSizeBallWithLowSimilarity 0 --computeNormalMaps False --verboseLevel info --output "C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/DepthMapFilter/3e0ae11c3467a433236adfc2b7e206ccc1068d94" --rangeStart 0 --rangeSize 10
+ - logFile: C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/DepthMapFilter/3e0ae11c3467a433236adfc2b7e206ccc1068d94/0.log
+ - elapsed time: 0:00:11.418112
+
+[9/11] Meshing
+ - commandLine: aliceVision_meshing  --input "C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/StructureFromMotion/ad1c4ee4550b3e5bc0d566ddb6f2017aced7b5e0/sfm.abc" --depthMapsFolder "C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/DepthMap/2e580a560266618e84cf1c0d2e86f62c65c13645" --depthMapsFilterFolder "C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/DepthMapFilter/3e0ae11c3467a433236adfc2b7e206ccc1068d94" --estimateSpaceFromSfM True --estimateSpaceMinObservations 3 --estimateSpaceMinObservationAngle 10 --maxInputPoints 50000000 --maxPoints 5000000 --maxPointsPerVoxel 1000000 --minStep 2 --partitioning singleBlock --repartition multiResolution --angleFactor 15.0 --simFactor 15.0 --pixSizeMarginInitCoef 2.0 --pixSizeMarginFinalCoef 4.0 --voteMarginFactor 4.0 --contributeMarginFactor 2.0 --simGaussianSizeInit 10.0 --simGaussianSize 10.0 --minAngleThreshold 1.0 --refineFuse True --addLandmarksToTheDensePointCloud False --colorizeOutput False --saveRawDensePointCloud False --verboseLevel info --outputMesh "C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/Meshing/f5b4580c930418474e67c52663da102a5a83cda4/mesh.obj" --output "C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/Meshing/f5b4580c930418474e67c52663da102a5a83cda4/densePointCloud.abc"
+ - logFile: C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/Meshing/f5b4580c930418474e67c52663da102a5a83cda4/log
+ - elapsed time: 0:00:31.621184
+
+[10/11] MeshFiltering
+ - commandLine: aliceVision_meshFiltering  --inputMesh "C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/Meshing/f5b4580c930418474e67c52663da102a5a83cda4/mesh.obj" --removeLargeTrianglesFactor 60.0 --keepLargestMeshOnly False --iterations 5 --lambda 1.0 --verboseLevel info --outputMesh "C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/MeshFiltering/7281ac3ef314dfb9f3559233be25aa3e28aa749e/mesh.obj"
+ - logFile: C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/MeshFiltering/7281ac3ef314dfb9f3559233be25aa3e28aa749e/log
+ - elapsed time: 0:00:02.450442
+
+[11/11] Texturing
+ - commandLine: aliceVision_texturing  --input "C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/Meshing/f5b4580c930418474e67c52663da102a5a83cda4/densePointCloud.abc" --imagesFolder "C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/PrepareDenseScene/52b23db2a12a71d23518f6000a6c31f4abd5a88e" --inputMesh "C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/MeshFiltering/7281ac3ef314dfb9f3559233be25aa3e28aa749e/mesh.obj" --textureSide 8192 --downscale 1 --outputTextureFileType png --unwrapMethod Basic --useUDIM True --fillHoles False --padding 5 --correctEV False --useScore True --processColorspace sRGB --multiBandDownscale 4 --multiBandNbContrib 1 5 10 0 --bestScoreThreshold 0.1 --angleHardThreshold 90.0 --forceVisibleByAllVertices False --flipNormals False --visibilityRemappingMethod PullPush --verboseLevel info --output "C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/Texturing/85f330c1cccf330e51fe5d1cfb03ba7c6a925654"
+ - logFile: C:/Users/DIMA/AppData/Local/Temp/MeshroomCache/Texturing/85f330c1cccf330e51fe5d1cfb03ba7c6a925654/log
+ - elapsed time: 0:00:28.738924
