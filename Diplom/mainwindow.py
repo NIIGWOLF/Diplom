@@ -9,7 +9,16 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+import sys, os
+import shutil
+import nodes
 
+def SilentMkdir(theDir):
+	try:
+		os.mkdir(theDir)
+	except:
+		pass
+	return 0
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -20,6 +29,7 @@ class Ui_MainWindow(object):
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton.setGeometry(QtCore.QRect(170, 10, 93, 28))
         self.pushButton.setObjectName("pushButton")
+        self.pushButton.clicked.connect(btn1_click)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 452, 26))
@@ -36,6 +46,31 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.pushButton.setText(_translate("MainWindow", "PushButton"))
+
+def btn1_click():
+    print("click");
+    baseDir = "D:\\Diplom\\Diplom\\Diplom"
+    srcImageDir = "D:\\Diplom\\Diplom\\image_test\\my5"
+    binDir = "D:\\Meshroom-2019.2.0\\aliceVision\\bin"
+    numImages = 5
+
+    nodes.Run_00_CameraInit(baseDir, binDir, srcImageDir)
+    nodes.Run_01_FeatureExtraction(baseDir, binDir, numImages)
+    nodes.Run_02_ImageMatching(baseDir, binDir)
+    nodes.Run_03_FeatureMatching(baseDir, binDir)
+    nodes.Run_04_StructureFromMotion(baseDir, binDir)
+    nodes.Run_05_PrepareDenseScene(baseDir, binDir)
+
+    nodes.Run_06_CameraConnection(baseDir, binDir)
+
+    nodes.Run_07_DepthMap(baseDir, binDir, numImages, 3)
+    nodes.Run_08_DepthMapFilter(baseDir, binDir)
+    nodes.Run_09_Meshing(baseDir, binDir)
+    nodes.Run_10_MeshFiltering(baseDir, binDir)
+
+    nodes.Run_11_Texturing(baseDir, binDir)
+
+    return 0
 
 
 if __name__ == "__main__":
