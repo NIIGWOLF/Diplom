@@ -7,276 +7,352 @@ def SilentMkdir(theDir):
         pass
     return 0
 
+def pars(str):
+    arr = str.split()
+    currentParam = ''
+    strParam = ''
+    dict = {}
+    for x in range(1, len(arr)):
+        if (re.match(r'--*', arr[x])):
+            if (currentParam!=''):
+                dict[currentParam] = [strParam.strip(),0]
+            #print(currentParam+' '+ strParam.strip())
+            currentParam = arr[x]
+            strParam = ''
+        else:
+            strParam += ' ' + arr[x]
+    #print(currentParam+' '+ strParam.strip())
+    dict[currentParam] = [strParam.strip(), 0]
+    node = Node(arr[0], arr[0], dict)
+    return node
 
-def Run_00_CameraInit(baseDir, binDir, srcImageDir):
-    SilentMkdir(baseDir + "/00_CameraInit")
+class Node:
+    def __init__(self, name, run, dict):
+        self.name = name
+        self.run = run
+        self.dict = dict
 
-    binName = binDir + "\\aliceVision_cameraInit.exe"
-
-    dstDir = baseDir + "/00_CameraInit/"
-    cmdLine = binName
-    cmdLine = cmdLine + " --defaultFieldOfView 45.0 --verboseLevel info --sensorDatabase \"\" --allowSingleView 1"
-    cmdLine = cmdLine + " --imageFolder \"" + srcImageDir + "\""
-    cmdLine = cmdLine + " --output \"" + dstDir + "cameraInit.sfm\""
-    print(cmdLine)
-    os.system(cmdLine)
-
-    return 0
-
-
-def Run_01_FeatureExtraction(baseDir, binDir, numImages):
-    SilentMkdir(baseDir + "/01_FeatureExtraction")
-
-    srcSfm = baseDir + "/00_CameraInit/cameraInit.sfm"
-
-    binName = binDir + "\\aliceVision_featureExtraction.exe"
-
-    dstDir = baseDir + "/01_FeatureExtraction/"
-
-    cmdLine = binName
-    cmdLine = cmdLine + " --describerTypes sift --forceCpuExtraction True --verboseLevel info --describerPreset normal"
-    cmdLine = cmdLine + " --rangeStart 0 --rangeSize " + str(numImages)
-    cmdLine = cmdLine + " --input \"" + srcSfm + "\""
-    cmdLine = cmdLine + " --output \"" + dstDir + "\""
-    print(cmdLine)
-    os.system(cmdLine)
-
-    return 0
+    def output(self):
+        str = self.run
+        for key in self.dict:
+            str += ' ' + key + ' ' + self.dict.get(key)[0]
+        return str
 
 
-def Run_02_ImageMatching(baseDir, binDir):
-    SilentMkdir(baseDir + "/02_ImageMatching")
+def Run_00_CameraInit(baseDir, aliceDir, srcImageDir):
+    SilentMkdir(baseDir + "\\00_CameraInit")
 
-    srcSfm = baseDir + "/00_CameraInit/cameraInit.sfm"
-    srcFeatures = baseDir + "/01_FeatureExtraction/"
-    dstMatches = baseDir + "/02_ImageMatching/imageMatches.txt"
+    cmdLine =f'''{aliceDir}\\bin\\aliceVision_cameraInit.exe
+        --defaultFieldOfView 45.0
+        --verboseLevel info
+        --allowSingleView 1
+        --sensorDatabase "" 
+        --imageFolder "{srcImageDir}"
+        --output "{baseDir}\\00_CameraInit\\cameraInit.sfm"'''
 
-    binName = binDir + "\\aliceVision_imageMatching.exe"
-
-    cmdLine = binName
-    cmdLine = cmdLine + " --minNbImages 200 --tree "" --maxDescriptors 500 --verboseLevel info --weights "" --nbMatches 50"
-    cmdLine = cmdLine + " --input \"" + srcSfm + "\""
-    cmdLine = cmdLine + " --featuresFolder \"" + srcFeatures + "\""
-    cmdLine = cmdLine + " --output \"" + dstMatches + "\""
-
-    print(cmdLine)
-    os.system(cmdLine)
+    print(cmdLine.replace('\n',' '))
+    os.system(cmdLine.replace('\n',' '))
 
     return 0
 
 
-def Run_03_FeatureMatching(baseDir, binDir):
-    SilentMkdir(baseDir + "/03_FeatureMatching")
+def Run_01_FeatureExtraction(baseDir, aliceDir, numImages):
+    SilentMkdir(baseDir + "\\01_FeatureExtraction")
 
-    srcSfm = baseDir + "/00_CameraInit/cameraInit.sfm"
-    srcFeatures = baseDir + "/01_FeatureExtraction/"
-    srcImageMatches = baseDir + "/02_ImageMatching/imageMatches.txt"
-    dstMatches = baseDir + "/03_FeatureMatching"
+    cmdLine = f'''{aliceDir}\\bin\\aliceVision_featureExtraction.exe
+        --input "{baseDir}\\00_CameraInit\\cameraInit.sfm"
+        --describerTypes sift
+        --describerPreset normal
+        --forceCpuExtraction True
+        --verboseLevel info
+        --output {baseDir}\\01_FeatureExtraction
+        --rangeStart 0
+        --rangeSize {numImages}'''
 
-    binName = binDir + "\\aliceVision_featureMatching.exe"
-
-    cmdLine = binName
-    cmdLine = cmdLine + " --verboseLevel info --describerTypes sift --maxMatches 0 --exportDebugFiles False --savePutativeMatches False --guidedMatching False"
-    cmdLine = cmdLine + " --geometricEstimator acransac --geometricFilterType fundamental_matrix --maxIteration 2048 --distanceRatio 0.8"
-    cmdLine = cmdLine + " --photometricMatchingMethod ANN_L2"
-    cmdLine = cmdLine + " --imagePairsList \"" + srcImageMatches + "\""
-    cmdLine = cmdLine + " --input \"" + srcSfm + "\""
-    cmdLine = cmdLine + " --featuresFolders \"" + srcFeatures + "\""
-    cmdLine = cmdLine + " --output \"" + dstMatches + "\""
-
-    print(cmdLine)
-    os.system(cmdLine)
-    return 0
-
-
-def Run_04_StructureFromMotion(baseDir, binDir):
-    SilentMkdir(baseDir + "/04_StructureFromMotion")
-
-    srcSfm = baseDir + "/00_CameraInit/cameraInit.sfm"
-    srcFeatures = baseDir + "/01_FeatureExtraction/"
-    srcImageMatches = baseDir + "/02_ImageMatching/imageMatches.txt"
-    srcMatches = baseDir + "/03_FeatureMatching"
-    dstDir = baseDir + "/04_StructureFromMotion"
-
-    binName = binDir + "\\aliceVision_incrementalSfm.exe"
-
-    cmdLine = binName
-    cmdLine = cmdLine + " --minAngleForLandmark 2.0 --minNumberOfObservationsForTriangulation 2 --maxAngleInitialPair 40.0 --maxNumberOfMatches 0 --localizerEstimator acransac --describerTypes sift --lockScenePreviouslyReconstructed False --localBAGraphDistance 1"
-    cmdLine = cmdLine + " --initialPairA "" --initialPairB "" --interFileExtension .ply --useLocalBA True"
-    cmdLine = cmdLine + " --minInputTrackLength 2 --useOnlyMatchesFromInputFolder False --verboseLevel info --minAngleForTriangulation 3.0 --maxReprojectionError 4.0 --minAngleInitialPair 5.0"
-
-    cmdLine = cmdLine + " --input \"" + srcSfm + "\""
-    cmdLine = cmdLine + " --featuresFolders \"" + srcFeatures + "\""
-    cmdLine = cmdLine + " --matchesFolders \"" + srcMatches + "\""
-    cmdLine = cmdLine + " --outputViewsAndPoses \"" + dstDir + "/cameras.sfm\""
-    cmdLine = cmdLine + " --extraInfoFolder \"" + dstDir + "\""
-    cmdLine = cmdLine + " --output \"" + dstDir + "/bundle.sfm\""
-
-    print(cmdLine)
-    os.system(cmdLine)
-    return 0
-
-
-def Run_05_PrepareDenseScene(baseDir, binDir):
-    SilentMkdir(baseDir + "/05_PrepareDenseScene")
-
-    # srcSfm = baseDir + "/04_StructureFromMotion/cameras.sfm"
-    srcSfm = baseDir + "/04_StructureFromMotion/bundle.sfm"
-    dstDir = baseDir + "/05_PrepareDenseScene"
-
-    binName = binDir + "\\aliceVision_prepareDenseScene.exe"
-
-    cmdLine = binName
-    cmdLine = cmdLine + " --verboseLevel info"
-    cmdLine = cmdLine + " --input \"" + srcSfm + "\""
-    cmdLine = cmdLine + " --output \"" + dstDir + "\""
-
-    print(cmdLine)
-    os.system(cmdLine)
-    return 0
-
-
-def Run_06_CameraConnection(baseDir, binDir):
-    SilentMkdir(baseDir + "/06_CameraConnection")
-
-    srcIni = baseDir + "/05_PrepareDenseScene/mvs.ini"
-
-    # This step kindof breaks the directory structure. Tt creates
-    # a camsPairsMatrixFromSeeds.bin file in in the same file as mvs.ini
-    binName = binDir + "\\aliceVision_cameraConnection.exe"
-
-    cmdLine = binName
-    cmdLine = cmdLine + " --verboseLevel info"
-    cmdLine = cmdLine + " --ini \"" + srcIni + "\""
-
-    print(cmdLine)
-    os.system(cmdLine)
-    return 0
-
-
-def Run_07_DepthMap(baseDir, binDir, numImages, groupSize):
-    SilentMkdir(baseDir + "/07_DepthMap")
-
-    numGroups = (numImages + (groupSize - 1)) / groupSize
-
-    srcIni = baseDir + "/05_PrepareDenseScene/mvs.ini"
-    binName = binDir + "\\aliceVision_depthMapEstimation.exe"
-    dstDir = baseDir + "/07_DepthMap"
-
-    cmdLine = binName
-    cmdLine = cmdLine + " --sgmGammaC 5.5 --sgmWSH 4 --refineGammaP 8.0 --refineSigma 15 --refineNSamplesHalf 150 --sgmMaxTCams 10 --refineWSH 3 --downscale 2 --refineMaxTCams 6 --verboseLevel info --refineGammaC 15.5 --sgmGammaP 8.0"
-    cmdLine = cmdLine + " --refineNiters 100 --refineNDepthsToRefine 31 --refineUseTcOrRcPixSize False"
-
-    cmdLine = cmdLine + " --ini \"" + srcIni + "\""
-    cmdLine = cmdLine + " --output \"" + dstDir + "\""
-
-    for groupIter in range(numGroups):
-        groupStart = groupSize * groupIter
-        groupSize = min(groupSize, numImages - groupStart)
-        print("DepthMap Group %d/%d: %d, %d" % (groupIter, numGroups, groupStart, groupSize))
-
-        cmd = cmdLine + (" --rangeStart %d --rangeSize %d" % (groupStart, groupSize))
-        print(cmd)
-        os.system(cmd)
-
-    # cmd = "aliceVision_depthMapEstimation  --sgmGammaC 5.5 --sgmWSH 4 --refineGammaP 8.0 --refineSigma 15 --refineNSamplesHalf 150 --sgmMaxTCams 10 --refineWSH 3 --downscale 2 --refineMaxTCams 6 --verboseLevel info --refineGammaC 15.5 --sgmGammaP 8.0 --ini \"c:/users/geforce/appdata/local/temp/MeshroomCache/PrepareDenseScene/4f0d6d9f9d072ed05337fd7c670811b1daa00e62/mvs.ini\" --refineNiters 100 --refineNDepthsToRefine 31 --refineUseTcOrRcPixSize False --output \"c:/users/geforce/appdata/local/temp/MeshroomCache/DepthMap/18f3bd0a90931bd749b5eda20c8bf9f6dab63af9\" --rangeStart 0 --rangeSize 3"
-    # cmd = binName + " --sgmGammaC 5.5 --sgmWSH 4 --refineGammaP 8.0 --refineSigma 15 --refineNSamplesHalf 150 --sgmMaxTCams 10 --refineWSH 3 --downscale 2 --refineMaxTCams 6 --verboseLevel info --refineGammaC 15.5 --sgmGammaP 8.0 --ini \"c:/users/geforce/appdata/local/temp/MeshroomCache/PrepareDenseScene/4f0d6d9f9d072ed05337fd7c670811b1daa00e62/mvs.ini\" --refineNiters 100 --refineNDepthsToRefine 31 --refineUseTcOrRcPixSize False --output \"build_files/07_DepthMap/\" --rangeStart 0 --rangeSize 3"
-    # cmd = binName + " --sgmGammaC 5.5 --sgmWSH 4 --refineGammaP 8.0 --refineSigma 15 --refineNSamplesHalf 150 --sgmMaxTCams 10 --refineWSH 3 --downscale 2 --refineMaxTCams 6 --verboseLevel info --refineGammaC 15.5 --sgmGammaP 8.0 --ini \"" + srcIni + "\" --refineNiters 100 --refineNDepthsToRefine 31 --refineUseTcOrRcPixSize False --output \"build_files/07_DepthMap/\" --rangeStart 0 --rangeSize 3"
-    # print(cmd)
-    # os.system(cmd)
+    print(cmdLine.replace('\n',' '))
+    os.system(cmdLine.replace('\n',' '))
 
     return 0
 
 
-def Run_08_DepthMapFilter(baseDir, binDir):
-    SilentMkdir(baseDir + "/08_DepthMapFilter")
+def Run_02_ImageMatching(baseDir, aliceDir):
+    SilentMkdir(baseDir + "\\02_ImageMatching")
 
-    binName = binDir + "\\aliceVision_depthMapFiltering.exe"
-    dstDir = baseDir + "/08_DepthMapFilter"
-    srcIni = baseDir + "/05_PrepareDenseScene/mvs.ini"
-    srcDepthDir = baseDir + "/07_DepthMap"
+    cmdLine = f'''{aliceDir}\\bin\\aliceVision_imageMatching.exe
+        --input "{baseDir}\\00_CameraInit\\cameraInit.sfm" 
+        --featuresFolders "{baseDir}\\01_FeatureExtraction" 
+        --tree "" 
+        --weights "" 
+        --minNbImages 200 
+        --maxDescriptors 500 
+        --nbMatches 50 
+        --verboseLevel info 
+        --output "{baseDir}\\02_ImageMatching\\imageMatches.txt"'''
 
-    cmdLine = binName
-    cmdLine = cmdLine + " --minNumOfConsistensCamsWithLowSimilarity 4"
-    cmdLine = cmdLine + " --minNumOfConsistensCams 3 --verboseLevel info --pixSizeBall 0"
-    cmdLine = cmdLine + " --pixSizeBallWithLowSimilarity 0 --nNearestCams 10"
-
-    cmdLine = cmdLine + " --ini \"" + srcIni + "\""
-    cmdLine = cmdLine + " --output \"" + dstDir + "\""
-    cmdLine = cmdLine + " --depthMapFolder \"" + srcDepthDir + "\""
-
-    print(cmdLine)
-    os.system(cmdLine)
-    return 0
-
-
-def Run_09_Meshing(baseDir, binDir):
-    SilentMkdir(baseDir + "/09_Meshing")
-
-    binName = binDir + "\\aliceVision_meshing.exe"
-    srcIni = baseDir + "/05_PrepareDenseScene/mvs.ini"
-    srcDepthFilterDir = baseDir + "/08_DepthMapFilter"
-    srcDepthMapDir = baseDir + "/07_DepthMap"
-
-    dstDir = baseDir + "/09_Meshing"
-
-    cmdLine = binName
-    cmdLine = cmdLine + " --simGaussianSizeInit 10.0 --maxInputPoints 50000000 --repartition multiResolution"
-    cmdLine = cmdLine + " --simGaussianSize 10.0 --simFactor 15.0 --voteMarginFactor 4.0 --contributeMarginFactor 2.0 --minStep 2 --pixSizeMarginFinalCoef 4.0 --maxPoints 5000000 --maxPointsPerVoxel 1000000 --angleFactor 15.0 --partitioning singleBlock"
-    cmdLine = cmdLine + " --minAngleThreshold 1.0 --pixSizeMarginInitCoef 2.0 --refineFuse True --verboseLevel info"
-
-    cmdLine = cmdLine + " --ini \"" + srcIni + "\""
-    cmdLine = cmdLine + " --depthMapFilterFolder \"" + srcDepthFilterDir + "\""
-    cmdLine = cmdLine + " --depthMapFolder \"" + srcDepthMapDir + "\""
-    cmdLine = cmdLine + " --output \"" + dstDir + "/mesh.obj\""
-
-    print(cmdLine)
-    os.system(cmdLine)
-    return 0
-
-
-def Run_10_MeshFiltering(baseDir, binDir):
-    SilentMkdir(baseDir + "/10_MeshFiltering")
-
-    binName = binDir + "\\aliceVision_meshFiltering.exe"
-
-    srcMesh = baseDir + "/09_Meshing/mesh.obj"
-    dstMesh = baseDir + "/10_MeshFiltering/mesh.obj"
-
-    cmdLine = binName
-    cmdLine = cmdLine + " --verboseLevel info --removeLargeTrianglesFactor 60.0 --iterations 5 --keepLargestMeshOnly True"
-    cmdLine = cmdLine + " --lambda 1.0"
-
-    cmdLine = cmdLine + " --input \"" + srcMesh + "\""
-    cmdLine = cmdLine + " --output \"" + dstMesh + "\""
-
-    print(cmdLine)
-    os.system(cmdLine)
+    print(cmdLine.replace('\n', ' '))
+    os.system(cmdLine.replace('\n', ' '))
 
     return 0
 
 
-def Run_11_Texturing(baseDir, binDir):
-    SilentMkdir(baseDir + "/11_Texturing")
+def Run_03_FeatureMatching(baseDir, aliceDir):
+    SilentMkdir(baseDir + "\\03_FeatureMatching")
 
-    binName = binDir + "\\aliceVision_texturing.exe"
+    cmdLine = f'''{aliceDir}\\bin\\aliceVision_featureMatching.exe
+        --input "{baseDir}\\00_CameraInit\\cameraInit.sfm" 
+        --featuresFolders "{baseDir}\\01_FeatureExtraction" 
+        --imagePairsList "{baseDir}\\02_ImageMatching\\imageMatches.txt" 
+        --describerTypes sift 
+        --photometricMatchingMethod ANN_L2 
+        --geometricEstimator acransac 
+        --geometricFilterType fundamental_matrix 
+        --distanceRatio 0.8 
+        --maxIteration 2048 
+        --geometricError 0.0 
+        --maxMatches 0 
+        --savePutativeMatches False 
+        --guidedMatching False 
+        --exportDebugFiles False 
+        --verboseLevel info 
+        --rangeStart 0 
+        --rangeSize 20 
+        --output "{baseDir}\\03_FeatureMatching"'''
 
-    srcMesh = baseDir + "/10_MeshFiltering/mesh.obj"
-    srcRecon = baseDir + "/09_Meshing/denseReconstruction.bin"
-    srcIni = baseDir + "/05_PrepareDenseScene/mvs.ini"
-    dstDir = baseDir + "/11_Texturing"
+    print(cmdLine.replace('\n', ' '))
+    os.system(cmdLine.replace('\n', ' '))
 
-    cmdLine = binName
-    cmdLine = cmdLine + " --textureSide 8192"
-    cmdLine = cmdLine + " --downscale 2 --verboseLevel info --padding 15"
-    cmdLine = cmdLine + " --unwrapMethod Basic --outputTextureFileType png --flipNormals False --fillHoles False"
+    return 0
 
-    cmdLine = cmdLine + " --inputDenseReconstruction \"" + srcRecon + "\""
-    cmdLine = cmdLine + " --inputMesh \"" + srcMesh + "\""
-    cmdLine = cmdLine + " --ini \"" + srcIni + "\""
-    cmdLine = cmdLine + " --output \"" + dstDir + "\""
 
-    print(cmdLine)
-    os.system(cmdLine)
+def Run_04_StructureFromMotion(baseDir, aliceDir):
+    SilentMkdir(baseDir + "\\04_StructureFromMotion")
+
+    cmdLine = f'''{aliceDir}\\bin\\aliceVision_incrementalSfm.exe
+        --input "{baseDir}\\00_CameraInit\\cameraInit.sfm" 
+        --featuresFolders "{baseDir}\\01_FeatureExtraction" 
+        --matchesFolders "{baseDir}\\03_FeatureMatching" 
+        --describerTypes sift 
+        --localizerEstimator acransac 
+        --localizerEstimatorMaxIterations 4096 
+        --localizerEstimatorError 0.0 
+        --lockScenePreviouslyReconstructed False 
+        --useLocalBA True 
+        --localBAGraphDistance 1 
+        --maxNumberOfMatches 0 
+        --minInputTrackLength 2 
+        --minNumberOfObservationsForTriangulation 2 
+        --minAngleForTriangulation 3.0 
+        --minAngleForLandmark 2.0 
+        --maxReprojectionError 4.0 
+        --minAngleInitialPair 5.0 
+        --maxAngleInitialPair 40.0 
+        --useOnlyMatchesFromInputFolder False 
+        --useRigConstraint True 
+        --lockAllIntrinsics False 
+        --initialPairA "" 
+        --initialPairB "" 
+        --interFileExtension .abc 
+        --verboseLevel info 
+        --outputViewsAndPoses "{baseDir}\\04_StructureFromMotion\\cameras.sfm" 
+        --extraInfoFolder "{baseDir}\\04_StructureFromMotion"
+        --output "{baseDir}\\04_StructureFromMotion\\sfm.abc"'''
+
+    print(cmdLine.replace('\n', ' '))
+    os.system(cmdLine.replace('\n', ' '))
+
+    return 0
+
+
+def Run_05_PrepareDenseScene(baseDir, aliceDir):
+    SilentMkdir(baseDir + "\\05_PrepareDenseScene")
+
+    cmdLine = f'''{aliceDir}\\bin\\aliceVision_prepareDenseScene.exe
+        --input "{baseDir}\\04_StructureFromMotion\\sfm.abc"  
+        --outputFileType exr 
+        --saveMetadata True 
+        --saveMatricesTxtFiles False 
+        --evCorrection False 
+        --verboseLevel info 
+        --rangeStart 0 
+        --rangeSize 40
+        --output "{baseDir}\\05_PrepareDenseScene"'''
+
+    print(cmdLine.replace('\n', ' '))
+    os.system(cmdLine.replace('\n', ' '))
+    return 0
+
+def Run_06_DepthMap(baseDir, aliceDir, numImages, groupSize):
+    SilentMkdir(baseDir + "\\06_DepthMap")
+
+    cmdLine = f'''{aliceDir}\\bin\\aliceVision_depthMapEstimation.exe
+        --input "{baseDir}\\04_StructureFromMotion\\sfm.abc"  
+        --imagesFolder "{baseDir}\\05_PrepareDenseScene" 
+        --downscale 2 
+        --minViewAngle 2.0 
+        --maxViewAngle 70.0 
+        --sgmMaxTCams 10 
+        --sgmWSH 4 
+        --sgmGammaC 5.5 
+        --sgmGammaP 8.0 
+        --refineMaxTCams 6 
+        --refineNSamplesHalf 150 
+        --refineNDepthsToRefine 31 
+        --refineNiters 100 
+        --refineWSH 3 
+        --refineSigma 15 
+        --refineGammaC 15.5 
+        --refineGammaP 8.0 
+        --refineUseTcOrRcPixSize False 
+        --exportIntermediateResults False 
+        --nbGPUs 0 
+        --verboseLevel info 
+        --rangeStart 0 
+        --rangeSize 3
+        --output "{baseDir}\\06_DepthMap"'''
+
+    print(cmdLine.replace('\n', ' '))
+    os.system(cmdLine.replace('\n', ' '))
+
+    cmdLine = f'''{aliceDir}\\bin\\aliceVision_depthMapEstimation.exe
+            --input "{baseDir}\\04_StructureFromMotion\\sfm.abc"  
+            --imagesFolder "{baseDir}\\05_PrepareDenseScene" 
+            --downscale 2 
+            --minViewAngle 2.0 
+            --maxViewAngle 70.0 
+            --sgmMaxTCams 10 
+            --sgmWSH 4 
+            --sgmGammaC 5.5 
+            --sgmGammaP 8.0 
+            --refineMaxTCams 6 
+            --refineNSamplesHalf 150 
+            --refineNDepthsToRefine 31 
+            --refineNiters 100 
+            --refineWSH 3 
+            --refineSigma 15 
+            --refineGammaC 15.5 
+            --refineGammaP 8.0 
+            --refineUseTcOrRcPixSize False 
+            --exportIntermediateResults False 
+            --nbGPUs 0 
+            --verboseLevel info 
+            --rangeStart 3 
+            --rangeSize 3
+            --output "{baseDir}\\06_DepthMap"'''
+
+    print(cmdLine.replace('\n', ' '))
+    os.system(cmdLine.replace('\n', ' '))
+
+    return 0
+
+
+def Run_07_DepthMapFilter(baseDir, aliceDir):
+    SilentMkdir(baseDir + "\\07_DepthMapFilter")
+
+    cmdLine = f'''{aliceDir}\\bin\\aliceVision_depthMapFiltering.exe
+        --input "{baseDir}\\04_StructureFromMotion\\sfm.abc"  
+        --depthMapsFolder "{baseDir}\\06_DepthMap" 
+        --minViewAngle 2.0 
+        --maxViewAngle 70.0 
+        --nNearestCams 10 
+        --minNumOfConsistentCams 3 
+        --minNumOfConsistentCamsWithLowSimilarity 4 
+        --pixSizeBall 0 
+        --pixSizeBallWithLowSimilarity 0 
+        --computeNormalMaps False 
+        --verboseLevel info 
+        --rangeStart 0 
+        --rangeSize 10
+        --output "{baseDir}\\07_DepthMapFilter"'''
+
+    print(cmdLine.replace('\n', ' '))
+    os.system(cmdLine.replace('\n', ' '))
+
+    return 0
+
+
+def Run_08_Meshing(baseDir, aliceDir):
+    SilentMkdir(baseDir + "\\08_Meshing")
+
+    cmdLine = f'''{aliceDir}\\bin\\aliceVision_meshing.exe
+        --input "{baseDir}\\04_StructureFromMotion\\sfm.abc"  
+        --depthMapsFolder "{baseDir}\\06_DepthMap" 
+        --depthMapsFilterFolder "{baseDir}\\07_DepthMapFilter" 
+        --estimateSpaceFromSfM True 
+        --estimateSpaceMinObservations 3 
+        --estimateSpaceMinObservationAngle 10 
+        --maxInputPoints 50000000 
+        --maxPoints 5000000 
+        --maxPointsPerVoxel 1000000 
+        --minStep 2 
+        --partitioning singleBlock 
+        --repartition multiResolution 
+        --angleFactor 15.0 
+        --simFactor 15.0 
+        --pixSizeMarginInitCoef 2.0 
+        --pixSizeMarginFinalCoef 4.0 
+        --voteMarginFactor 4.0 
+        --contributeMarginFactor 2.0 
+        --simGaussianSizeInit 10.0 
+        --simGaussianSize 10.0 
+        --minAngleThreshold 1.0 
+        --refineFuse True 
+        --addLandmarksToTheDensePointCloud False 
+        --colorizeOutput False 
+        --saveRawDensePointCloud False 
+        --verboseLevel info 
+        --outputMesh "{baseDir}\\08_Meshing\\mesh.obj" 
+        --output "{baseDir}\\08_Meshing\\densePointCloud.abc"'''
+
+    print(cmdLine.replace('\n', ' '))
+    os.system(cmdLine.replace('\n', ' '))
+
+    return 0
+
+
+def Run_09_MeshFiltering(baseDir, aliceDir):
+    SilentMkdir(baseDir + "\\09_MeshFiltering")
+
+    cmdLine = f'''{aliceDir}\\bin\\aliceVision_meshFiltering.exe
+        --inputMesh "{baseDir}\\08_Meshing\\mesh.obj" 
+        --keepLargestMeshOnly False 
+        --iterations 5 
+        --lambda 1.0 
+        --verboseLevel info 
+        --outputMesh "{baseDir}\\09_MeshFiltering\\mesh.obj"'''
+    print(cmdLine.replace('\n', ' '))
+    os.system(cmdLine.replace('\n', ' '))
+
+    return 0
+
+
+def Run_10_Texturing(baseDir, aliceDir):
+    SilentMkdir(baseDir + "\\10_Texturing")
+
+    cmdLine = f'''{aliceDir}\\bin\\aliceVision_texturing.exe
+        --input "{baseDir}\\08_Meshing\\densePointCloud.abc" 
+        --imagesFolder "{baseDir}\\05_PrepareDenseScene" 
+        --inputMesh "{baseDir}\\09_MeshFiltering\\mesh.obj" 
+        --textureSide 8192 
+        --downscale 1 
+        --outputTextureFileType png 
+        --unwrapMethod Basic 
+        --useUDIM True 
+        --fillHoles False 
+        --padding 5 
+        --correctEV False 
+        --useScore True 
+        --processColorspace sRGB 
+        --multiBandDownscale 4 
+        --multiBandNbContrib 1 5 10 0 
+        --bestScoreThreshold 0.1 
+        --angleHardThreshold 90.0 
+        --forceVisibleByAllVertices False 
+        --flipNormals False 
+        --visibilityRemappingMethod PullPush 
+        --verboseLevel info 
+        --output "{baseDir}\\10_Texturing"'''
+
+    print(cmdLine.replace('\n', ' '))
+    os.system(cmdLine.replace('\n', ' '))
 
     return 0

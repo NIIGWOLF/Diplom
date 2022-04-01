@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '.\mainwindow.ui'
+# Form implementation generated from reading ui file 'mainwindow.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.6
 #
@@ -9,75 +9,192 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-import sys, os
-import shutil
-import nodes
+from PyQt5.QtWidgets import QMessageBox
 
-def SilentMkdir(theDir):
-	try:
-		os.mkdir(theDir)
-	except:
-		pass
-	return 0
+class Event_MainWindow(QtWidgets.QMainWindow):
+    def closeEvent(self,event):
+        print("closeMain")
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(452, 429)
+        MainWindow.resize(849, 527)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
+        self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
+        self.gridLayout.setContentsMargins(7, 0, 7, 0)
+        self.gridLayout.setObjectName("gridLayout")
+        self.horizontalLayout = QtWidgets.QHBoxLayout()
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.verticalLayout = QtWidgets.QVBoxLayout()
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.PDtitel = QtWidgets.QHBoxLayout()
+        self.PDtitel.setObjectName("PDtitel")
+        self.PDnew = QtWidgets.QPushButton(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.PDnew.setFont(font)
+        self.PDnew.setObjectName("PDnew")
+        self.PDtitel.addWidget(self.PDnew)
+        self.PDsave = QtWidgets.QPushButton(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.PDsave.setFont(font)
+        self.PDsave.setObjectName("PDsave")
+        self.PDtitel.addWidget(self.PDsave)
+        self.PDload = QtWidgets.QPushButton(self.centralwidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.PDload.setFont(font)
+        self.PDload.setObjectName("PDload")
+        self.PDtitel.addWidget(self.PDload)
+        self.pushButton_2 = QtWidgets.QPushButton(self.centralwidget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.pushButton_2.sizePolicy().hasHeightForWidth())
+        self.pushButton_2.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.pushButton_2.setFont(font)
+        self.pushButton_2.setAutoRepeat(False)
+        self.pushButton_2.setAutoExclusive(False)
+        self.pushButton_2.setObjectName("pushButton_2")
+        self.PDtitel.addWidget(self.pushButton_2)
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton.setGeometry(QtCore.QRect(170, 10, 93, 28))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.pushButton.setFont(font)
         self.pushButton.setObjectName("pushButton")
-        self.pushButton.clicked.connect(btn1_click)
+        self.PDtitel.addWidget(self.pushButton)
+        self.verticalLayout.addLayout(self.PDtitel)
+        self.PDtitleadd = QtWidgets.QHBoxLayout()
+        self.PDtitleadd.setObjectName("PDtitleadd")
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.PDtitleadd.addItem(spacerItem)
+        self.PDadd = QtWidgets.QPushButton(self.centralwidget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.PDadd.sizePolicy().hasHeightForWidth())
+        self.PDadd.setSizePolicy(sizePolicy)
+        self.PDadd.setMinimumSize(QtCore.QSize(35, 35))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.PDadd.setFont(font)
+        self.PDadd.setObjectName("PDadd")
+        self.PDtitleadd.addWidget(self.PDadd)
+        self.verticalLayout.addLayout(self.PDtitleadd)
+        self.frame = QtWidgets.QFrame(self.centralwidget)
+        self.frame.setFrameShape(QtWidgets.QFrame.Box)
+        self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame.setLineWidth(2)
+        self.frame.setObjectName("frame")
+        self.gridLayout_2 = QtWidgets.QGridLayout(self.frame)
+        self.gridLayout_2.setContentsMargins(0, -1, 0, -1)
+        self.gridLayout_2.setObjectName("gridLayout_2")
+        self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_4.setObjectName("horizontalLayout_4")
+        self.label = QtWidgets.QLabel(self.frame)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.label.setFont(font)
+        self.label.setObjectName("label")
+        self.horizontalLayout_4.addWidget(self.label)
+        self.pushButton_7 = QtWidgets.QPushButton(self.frame)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.pushButton_7.sizePolicy().hasHeightForWidth())
+        self.pushButton_7.setSizePolicy(sizePolicy)
+        self.pushButton_7.setMinimumSize(QtCore.QSize(35, 35))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.pushButton_7.setFont(font)
+        self.pushButton_7.setObjectName("pushButton_7")
+        self.horizontalLayout_4.addWidget(self.pushButton_7)
+        self.pushButton_8 = QtWidgets.QPushButton(self.frame)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.pushButton_8.sizePolicy().hasHeightForWidth())
+        self.pushButton_8.setSizePolicy(sizePolicy)
+        self.pushButton_8.setMinimumSize(QtCore.QSize(35, 35))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.pushButton_8.setFont(font)
+        self.pushButton_8.setObjectName("pushButton_8")
+        self.horizontalLayout_4.addWidget(self.pushButton_8)
+        self.pushButton_9 = QtWidgets.QPushButton(self.frame)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.pushButton_9.sizePolicy().hasHeightForWidth())
+        self.pushButton_9.setSizePolicy(sizePolicy)
+        self.pushButton_9.setMinimumSize(QtCore.QSize(35, 35))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.pushButton_9.setFont(font)
+        self.pushButton_9.setObjectName("pushButton_9")
+        self.horizontalLayout_4.addWidget(self.pushButton_9)
+        self.pushButton_10 = QtWidgets.QPushButton(self.frame)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.pushButton_10.sizePolicy().hasHeightForWidth())
+        self.pushButton_10.setSizePolicy(sizePolicy)
+        self.pushButton_10.setMinimumSize(QtCore.QSize(35, 35))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.pushButton_10.setFont(font)
+        self.pushButton_10.setObjectName("pushButton_10")
+        self.horizontalLayout_4.addWidget(self.pushButton_10)
+        self.gridLayout_2.addLayout(self.horizontalLayout_4, 0, 0, 1, 1)
+        self.verticalLayout.addWidget(self.frame)
+        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout.addItem(spacerItem1)
+        self.horizontalLayout.addLayout(self.verticalLayout)
+        self.gridLayout.addLayout(self.horizontalLayout, 0, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 452, 26))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 849, 26))
         self.menubar.setObjectName("menubar")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
 
+
+
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+    def closeEvent(self, event):
+        reply = QtWidgets.QMessageBox.question(
+                    self,
+                    "Exit",
+                    "Are you sure to quit?",
+                    QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+                    QtWidgets.QMessageBox.No
+        )
+
+        if reply == QtWidgets.QMessageBox.Yes:
+            event.accept()
+        else:
+             event.ignore()
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        self.PDnew.setText(_translate("MainWindow", "Новый профиль"))
+        self.PDsave.setText(_translate("MainWindow", "Сохранить"))
+        self.PDload.setText(_translate("MainWindow", "Загрузить"))
+        self.pushButton_2.setText(_translate("MainWindow", "Push"))
         self.pushButton.setText(_translate("MainWindow", "PushButton"))
-
-def btn1_click():
-    print("click");
-    baseDir = "D:\\Diplom\\Diplom\\Diplom"
-    srcImageDir = "D:\\Diplom\\Diplom\\image_test\\my5"
-    binDir = "D:\\Meshroom-2019.2.0\\aliceVision\\bin"
-    numImages = 5
-
-    nodes.Run_00_CameraInit(baseDir, binDir, srcImageDir)
-    nodes.Run_01_FeatureExtraction(baseDir, binDir, numImages)
-    nodes.Run_02_ImageMatching(baseDir, binDir)
-    nodes.Run_03_FeatureMatching(baseDir, binDir)
-    nodes.Run_04_StructureFromMotion(baseDir, binDir)
-    nodes.Run_05_PrepareDenseScene(baseDir, binDir)
-
-    nodes.Run_06_CameraConnection(baseDir, binDir)
-
-    nodes.Run_07_DepthMap(baseDir, binDir, numImages, 3)
-    nodes.Run_08_DepthMapFilter(baseDir, binDir)
-    nodes.Run_09_Meshing(baseDir, binDir)
-    nodes.Run_10_MeshFiltering(baseDir, binDir)
-
-    nodes.Run_11_Texturing(baseDir, binDir)
-
-    return 0
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec_())
+        self.PDadd.setText(_translate("MainWindow", "+"))
+        self.label.setText(_translate("MainWindow", "TextLabel"))
+        self.pushButton_7.setText(_translate("MainWindow", "^"))
+        self.pushButton_8.setText(_translate("MainWindow", "v"))
+        self.pushButton_9.setText(_translate("MainWindow", "R"))
+        self.pushButton_10.setText(_translate("MainWindow", "-"))

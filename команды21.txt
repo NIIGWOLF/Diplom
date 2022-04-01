@@ -1,0 +1,177 @@
+Program called with the following parameters:
+ * allowSingleView = 1
+ * allowedCameraModels = "pinhole,radial1,radial3,brown,fisheye4,fisheye1"
+ * defaultCameraModel = "" (default)
+ * defaultFieldOfView = 45
+ * defaultFocalLengthPix = -1 (default)
+ * defaultIntrinsic = "" (default)
+ * groupCameraFallback =  Unknown Type "enum EGroupCameraFallback"
+ * imageFolder = "" (default)
+ * input = "C:\Users\DIMA\AppData\Local\Temp\tmp1_syisyk/CameraInit/f9436e97e444fa71a05aa5cf7639b206df8ba282//viewpoints.sfm"
+ * output = "C:/Users/DIMA/AppData/Local/Temp/tmp1_syisyk/CameraInit/f9436e97e444fa71a05aa5cf7639b206df8ba282/cameraInit.sfm"
+ * sensorDatabase = "C:\Users\DIMA\Downloads\Meshroom-2021.1.0-win64\Meshroom-2021.1.0\aliceVision\share\aliceVision\cameraSensors.db"
+ * useInternalWhiteBalance = 1
+ * verboseLevel = "info"
+ * viewIdMethod =  Unknown Type "enum aliceVision::sfmDataIO::EViewIdMethod"
+ * viewIdRegex = ".*?(\d+)" (default)
+
+[14:42:25.844047][warning] Some image(s) have no serial number to identify the camera/lens device.
+This makes it impossible to correctly group the images by device if you have used multiple identical (same model) camera devices.
+The reconstruction will assume that only one device has been used, so if 2 images share the same focal length approximation they will share the same internal camera parameters.
+5 image(s) are concerned.
+[14:42:25.854020][info] CameraInit report:
+        - # views listed: 5
+           - # views with an initialized intrinsic listed: 5
+           - # views without metadata (with a default intrinsic): 0
+        - # intrinsics listed: 1
+
+
+ - commandLine: 
+aliceVision_cameraInit  
+--sensorDatabase "C:\Users\DIMA\Downloads\Meshroom-2021.1.0-win64\Meshroom-2021.1.0\aliceVision\share\aliceVision\cameraSensors.db" 
+--defaultFieldOfView 45.0 
+--groupCameraFallback folder 
+--allowedCameraModels pinhole,radial1,radial3,brown,fisheye4,fisheye1 
+--useInternalWhiteBalance True 
+--viewIdMethod metadata 
+--verboseLevel info 
+--output "D:/Diplom/build21/MeshroomCache/CameraInit/d35a1b7574b6b712f375cea40e8dcf385e66b624/cameraInit.sfm" 
+--allowSingleView 1 
+--input "D:/Diplom/build21/MeshroomCache/CameraInit/d35a1b7574b6b712f375cea40e8dcf385e66b624//viewpoints.sfm"
+
+ - commandLine: 
+aliceVision_featureExtraction  
+--input "D:/Diplom/build21/MeshroomCache/CameraInit/d35a1b7574b6b712f375cea40e8dcf385e66b624/cameraInit.sfm" 
+--describerTypes sift 
+--describerPreset normal 
+--describerQuality normal 
+--contrastFiltering GridSort 
+--gridFiltering True 
+--forceCpuExtraction True 
+--maxThreads 0 
+--verboseLevel info 
+--output "D:/Diplom/build21/MeshroomCache/FeatureExtraction/1b989b5878efb0eb450e80ae09160703ab111567" 
+--rangeStart 0 
+--rangeSize 40
+
+
+ - commandLine: aliceVision_imageMatching  
+--input "D:/Diplom/build21/MeshroomCache/CameraInit/d35a1b7574b6b712f375cea40e8dcf385e66b624/cameraInit.sfm" 
+--featuresFolders "D:/Diplom/build21/MeshroomCache/FeatureExtraction/1b989b5878efb0eb450e80ae09160703ab111567" 
+--method VocabularyTree 
+--tree "C:\Users\DIMA\Downloads\Meshroom-2021.1.0-win64\Meshroom-2021.1.0\aliceVision\share\aliceVision\vlfeat_K80L3.SIFT.tree" 
+--weights "" 
+--minNbImages 200 
+--maxDescriptors 500 
+--nbMatches 50 
+--verboseLevel info 
+--output "D:/Diplom/build21/MeshroomCache/ImageMatching/09918a8239f34dfc965ab15c502bea2d9298d45c/imageMatches.txt"
+ 
+
+ - commandLine: aliceVision_featureMatching  
+--input "D:/Diplom/build21/MeshroomCache/CameraInit/d35a1b7574b6b712f375cea40e8dcf385e66b624/cameraInit.sfm" 
+--featuresFolders "D:/Diplom/build21/MeshroomCache/FeatureExtraction/1b989b5878efb0eb450e80ae09160703ab111567" 
+--imagePairsList "D:/Diplom/build21/MeshroomCache/ImageMatching/09918a8239f34dfc965ab15c502bea2d9298d45c/imageMatches.txt" 
+--describerTypes sift 
+--photometricMatchingMethod ANN_L2 
+--geometricEstimator acransac 
+--geometricFilterType fundamental_matrix 
+--distanceRatio 0.8 
+--maxIteration 2048 
+--geometricError 0.0 
+--knownPosesGeometricErrorMax 5.0 
+--maxMatches 0 
+--savePutativeMatches False 
+--crossMatching False 
+--guidedMatching False 
+--matchFromKnownCameraPoses False 
+--exportDebugFiles False 
+--verboseLevel info 
+--output "D:/Diplom/build21/MeshroomCache/FeatureMatching/f69a2d8b504c560b659dec717c2b729e5d4e79dc" 
+--rangeStart 0 
+--rangeSize 20
+ 
+
+ - commandLine: aliceVision_incrementalSfM  
+--input "D:/Diplom/build21/MeshroomCache/CameraInit/d35a1b7574b6b712f375cea40e8dcf385e66b624/cameraInit.sfm" 
+--featuresFolders "D:/Diplom/build21/MeshroomCache/FeatureExtraction/1b989b5878efb0eb450e80ae09160703ab111567" 
+--matchesFolders "D:/Diplom/build21/MeshroomCache/FeatureMatching/f69a2d8b504c560b659dec717c2b729e5d4e79dc" 
+--describerTypes sift 
+--localizerEstimator acransac 
+--observationConstraint Basic 
+--localizerEstimatorMaxIterations 4096 
+--localizerEstimatorError 0.0 
+--lockScenePreviouslyReconstructed False 
+--useLocalBA True 
+--localBAGraphDistance 1 
+--maxNumberOfMatches 0 
+--minNumberOfMatches 0 
+--minInputTrackLength 2 
+--minNumberOfObservationsForTriangulation 2 
+--minAngleForTriangulation 3.0 
+--minAngleForLandmark 2.0 
+--maxReprojectionError 4.0 
+--minAngleInitialPair 5.0 
+--maxAngleInitialPair 40.0 
+--useOnlyMatchesFromInputFolder False 
+--useRigConstraint True 
+--lockAllIntrinsics False 
+--filterTrackForks False 
+--initialPairA "" 
+--initialPairB "" 
+--interFileExtension .abc 
+--verboseLevel info 
+--output "D:/Diplom/build21/MeshroomCache/StructureFromMotion/3219a8e5c7d2cb9646ced985e4596faba40cf160/sfm.abc" 
+--outputViewsAndPoses "D:/Diplom/build21/MeshroomCache/StructureFromMotion/3219a8e5c7d2cb9646ced985e4596faba40cf160/cameras.sfm" 
+--extraInfoFolder "D:/Diplom/build21/MeshroomCache/StructureFromMotion/3219a8e5c7d2cb9646ced985e4596faba40cf160"
+ 
+
+ - commandLine: aliceVision_prepareDenseScene  
+--input "D:/Diplom/build21/MeshroomCache/StructureFromMotion/3219a8e5c7d2cb9646ced985e4596faba40cf160/sfm.abc" 
+--outputFileType exr 
+--saveMetadata True 
+--saveMatricesTxtFiles False 
+--evCorrection False 
+--verboseLevel info 
+--output "D:/Diplom/build21/MeshroomCache/PrepareDenseScene/2e8da9bbf38b9ae9df7ea10813671e0e2b8b3e4a" 
+--rangeStart 0 
+--rangeSize 40
+ 
+
+ - commandLine: aliceVision_depthMapEstimation  
+--input "D:/Diplom/build21/MeshroomCache/StructureFromMotion/3219a8e5c7d2cb9646ced985e4596faba40cf160/sfm.abc" 
+--imagesFolder "D:/Diplom/build21/MeshroomCache/PrepareDenseScene/2e8da9bbf38b9ae9df7ea10813671e0e2b8b3e4a" 
+--downscale 2 
+--minViewAngle 2.0 
+--maxViewAngle 70.0 
+--sgmMaxTCams 10 
+--sgmWSH 4 
+--sgmGammaC 5.5 
+--sgmGammaP 8.0 
+--refineMaxTCams 6 
+--refineNSamplesHalf 150 
+--refineNDepthsToRefine 31 
+--refineNiters 100 
+--refineWSH 3 
+--refineSigma 15 
+--refineGammaC 15.5 
+--refineGammaP 8.0 
+--refineUseTcOrRcPixSize False 
+--exportIntermediateResults False 
+--nbGPUs 0 
+--verboseLevel info 
+--output "D:/Diplom/build21/MeshroomCache/DepthMap/066fddb68ce3fe105f122fa7302542120185394d" 
+--rangeStart 0 
+--rangeSize 3
+ 
+
+ - commandLine: aliceVision_depthMapEstimation  --input "D:/Diplom/build21/MeshroomCache/StructureFromMotion/3219a8e5c7d2cb9646ced985e4596faba40cf160/sfm.abc" --imagesFolder "D:/Diplom/build21/MeshroomCache/PrepareDenseScene/2e8da9bbf38b9ae9df7ea10813671e0e2b8b3e4a" --downscale 2 --minViewAngle 2.0 --maxViewAngle 70.0 --sgmMaxTCams 10 --sgmWSH 4 --sgmGammaC 5.5 --sgmGammaP 8.0 --refineMaxTCams 6 --refineNSamplesHalf 150 --refineNDepthsToRefine 31 --refineNiters 100 --refineWSH 3 --refineSigma 15 --refineGammaC 15.5 --refineGammaP 8.0 --refineUseTcOrRcPixSize False --exportIntermediateResults False --nbGPUs 0 --verboseLevel info --output "D:/Diplom/build21/MeshroomCache/DepthMap/066fddb68ce3fe105f122fa7302542120185394d" --rangeStart 3 --rangeSize 3
+ - logFile: D:/Diplom/build21/MeshroomCache/DepthMap/066fddb68ce3fe105f122fa7302542120185394d/1.log
+ - commandLine: aliceVision_depthMapFiltering  --input "D:/Diplom/build21/MeshroomCache/StructureFromMotion/3219a8e5c7d2cb9646ced985e4596faba40cf160/sfm.abc" --depthMapsFolder "D:/Diplom/build21/MeshroomCache/DepthMap/066fddb68ce3fe105f122fa7302542120185394d" --minViewAngle 2.0 --maxViewAngle 70.0 --nNearestCams 10 --minNumOfConsistentCams 3 --minNumOfConsistentCamsWithLowSimilarity 4 --pixSizeBall 0 --pixSizeBallWithLowSimilarity 0 --computeNormalMaps False --verboseLevel info --output "D:/Diplom/build21/MeshroomCache/DepthMapFilter/ab81d68b8077f1d8059fe076e74b8684e4176fe6" --rangeStart 0 --rangeSize 10
+ - logFile: D:/Diplom/build21/MeshroomCache/DepthMapFilter/ab81d68b8077f1d8059fe076e74b8684e4176fe6/0.log
+ - commandLine: aliceVision_meshing  --input "D:/Diplom/build21/MeshroomCache/StructureFromMotion/3219a8e5c7d2cb9646ced985e4596faba40cf160/sfm.abc" --depthMapsFolder "D:/Diplom/build21/MeshroomCache/DepthMapFilter/ab81d68b8077f1d8059fe076e74b8684e4176fe6" --estimateSpaceFromSfM True --estimateSpaceMinObservations 3 --estimateSpaceMinObservationAngle 10 --maxInputPoints 50000000 --maxPoints 5000000 --maxPointsPerVoxel 1000000 --minStep 2 --partitioning singleBlock --repartition multiResolution --angleFactor 15.0 --simFactor 15.0 --pixSizeMarginInitCoef 2.0 --pixSizeMarginFinalCoef 4.0 --voteMarginFactor 4.0 --contributeMarginFactor 2.0 --simGaussianSizeInit 10.0 --simGaussianSize 10.0 --minAngleThreshold 1.0 --refineFuse True --helperPointsGridSize 10 --nPixelSizeBehind 4.0 --fullWeight 1.0 --voteFilteringForWeaklySupportedSurfaces True --addLandmarksToTheDensePointCloud False --invertTetrahedronBasedOnNeighborsNbIterations 10 --minSolidAngleRatio 0.2 --nbSolidAngleFilteringIterations 2 --colorizeOutput False --maxNbConnectedHelperPoints 50 --saveRawDensePointCloud False --exportDebugTetrahedralization False --seed 0 --verboseLevel info --outputMesh "D:/Diplom/build21/MeshroomCache/Meshing/256f73170b92016f5e4b405032435534ed9b228d/mesh.obj" --output "D:/Diplom/build21/MeshroomCache/Meshing/256f73170b92016f5e4b405032435534ed9b228d/densePointCloud.abc"
+ - logFile: D:/Diplom/build21/MeshroomCache/Meshing/256f73170b92016f5e4b405032435534ed9b228d/log
+ - commandLine: aliceVision_meshFiltering  --inputMesh "D:/Diplom/build21/MeshroomCache/Meshing/256f73170b92016f5e4b405032435534ed9b228d/mesh.obj" --keepLargestMeshOnly False --smoothingSubset all --smoothingBoundariesNeighbours 0 --smoothingIterations 5 --smoothingLambda 1.0 --filteringSubset all --filteringIterations 1 --filterLargeTrianglesFactor 60.0 --filterTrianglesRatio 0.0 --verboseLevel info --outputMesh "D:/Diplom/build21/MeshroomCache/MeshFiltering/c2db9364f25ced06d5b5c677e619fb47b1fcc473/mesh.obj"
+ - logFile: D:/Diplom/build21/MeshroomCache/MeshFiltering/c2db9364f25ced06d5b5c677e619fb47b1fcc473/log
+ - commandLine: aliceVision_texturing  --input "D:/Diplom/build21/MeshroomCache/Meshing/256f73170b92016f5e4b405032435534ed9b228d/densePointCloud.abc" --imagesFolder "D:/Diplom/build21/MeshroomCache/PrepareDenseScene/2e8da9bbf38b9ae9df7ea10813671e0e2b8b3e4a" --inputMesh "D:/Diplom/build21/MeshroomCache/MeshFiltering/c2db9364f25ced06d5b5c677e619fb47b1fcc473/mesh.obj" --textureSide 8192 --downscale 2 --outputTextureFileType png --unwrapMethod Basic --useUDIM True --fillHoles False --padding 5 --multiBandDownscale 4 --multiBandNbContrib 1 5 10 0 --useScore True --bestScoreThreshold 0.1 --angleHardThreshold 90.0 --processColorspace sRGB --correctEV False --forceVisibleByAllVertices False --flipNormals False --visibilityRemappingMethod PullPush --subdivisionTargetRatio 0.8 --verboseLevel info --output "D:/Diplom/build21/MeshroomCache/Texturing/ae746b38aa4fe119e69a4437e2a9eae39f32304b"
+ - logFile: D:/Diplom/build21/MeshroomCache/Texturing/ae746b38aa4fe119e69a4437e2a9eae39f32304b/log
