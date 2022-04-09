@@ -11,7 +11,6 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QCheckBox>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QFrame>
 #include <QtWidgets/QGridLayout>
@@ -49,25 +48,20 @@ public:
     QGridLayout *gridLayout_4;
     QSpacerItem *ENverticalSpacer;
     QGridLayout *ENgridParam;
-    QPushButton *pushButton_6;
-    QLineEdit *lineEdit_4;
-    QLineEdit *lineEdit_3;
-    QPushButton *pushButton_5;
-    QLabel *ENltNameParam;
-    QLineEdit *lineEdit_2;
-    QLineEdit *lineEdit_5;
     QLabel *ENltValueParam;
     QLabel *ENltBool;
-    QHBoxLayout *horizontalLayout;
-    QCheckBox *checkBox;
-    QHBoxLayout *horizontalLayout_2;
-    QCheckBox *checkBox_2;
+    QLabel *ENltNameParam;
+    QLabel *ENltDelButton;
+    QHBoxLayout *ENhorizontalSaveChanged;
+    QSpacerItem *horizontalSpacer;
+    QPushButton *ENSaveChanged;
 
     void setupUi(QDialog *DialogEditNodesWindow)
     {
         if (DialogEditNodesWindow->objectName().isEmpty())
             DialogEditNodesWindow->setObjectName(QString::fromUtf8("DialogEditNodesWindow"));
         DialogEditNodesWindow->resize(800, 400);
+        DialogEditNodesWindow->setMinimumSize(QSize(800, 400));
         gridLayout = new QGridLayout(DialogEditNodesWindow);
         gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
         ENmaingrid = new QGridLayout();
@@ -164,7 +158,7 @@ public:
         ENscrollAreaParam->setWidgetResizable(true);
         ENscrollAreaParamContents = new QWidget();
         ENscrollAreaParamContents->setObjectName(QString::fromUtf8("ENscrollAreaParamContents"));
-        ENscrollAreaParamContents->setGeometry(QRect(0, 0, 772, 244));
+        ENscrollAreaParamContents->setGeometry(QRect(0, 0, 772, 200));
         gridLayout_4 = new QGridLayout(ENscrollAreaParamContents);
         gridLayout_4->setObjectName(QString::fromUtf8("gridLayout_4"));
         ENverticalSpacer = new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
@@ -173,64 +167,6 @@ public:
 
         ENgridParam = new QGridLayout();
         ENgridParam->setObjectName(QString::fromUtf8("ENgridParam"));
-        pushButton_6 = new QPushButton(ENscrollAreaParamContents);
-        pushButton_6->setObjectName(QString::fromUtf8("pushButton_6"));
-        pushButton_6->setMinimumSize(QSize(35, 35));
-        pushButton_6->setMaximumSize(QSize(35, 35));
-
-        ENgridParam->addWidget(pushButton_6, 2, 4, 1, 1);
-
-        lineEdit_4 = new QLineEdit(ENscrollAreaParamContents);
-        lineEdit_4->setObjectName(QString::fromUtf8("lineEdit_4"));
-        lineEdit_4->setMinimumSize(QSize(0, 35));
-        lineEdit_4->setMaximumSize(QSize(16777215, 35));
-        lineEdit_4->setFont(font);
-
-        ENgridParam->addWidget(lineEdit_4, 2, 0, 1, 1);
-
-        lineEdit_3 = new QLineEdit(ENscrollAreaParamContents);
-        lineEdit_3->setObjectName(QString::fromUtf8("lineEdit_3"));
-        lineEdit_3->setMinimumSize(QSize(0, 35));
-        lineEdit_3->setMaximumSize(QSize(16777215, 35));
-        lineEdit_3->setFont(font);
-
-        ENgridParam->addWidget(lineEdit_3, 1, 1, 1, 1);
-
-        pushButton_5 = new QPushButton(ENscrollAreaParamContents);
-        pushButton_5->setObjectName(QString::fromUtf8("pushButton_5"));
-        QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-        sizePolicy.setHorizontalStretch(0);
-        sizePolicy.setVerticalStretch(0);
-        sizePolicy.setHeightForWidth(pushButton_5->sizePolicy().hasHeightForWidth());
-        pushButton_5->setSizePolicy(sizePolicy);
-        pushButton_5->setMinimumSize(QSize(35, 35));
-        pushButton_5->setMaximumSize(QSize(35, 35));
-        pushButton_5->setFont(font1);
-
-        ENgridParam->addWidget(pushButton_5, 1, 4, 1, 1);
-
-        ENltNameParam = new QLabel(ENscrollAreaParamContents);
-        ENltNameParam->setObjectName(QString::fromUtf8("ENltNameParam"));
-        ENltNameParam->setFont(font);
-
-        ENgridParam->addWidget(ENltNameParam, 0, 0, 1, 1);
-
-        lineEdit_2 = new QLineEdit(ENscrollAreaParamContents);
-        lineEdit_2->setObjectName(QString::fromUtf8("lineEdit_2"));
-        lineEdit_2->setMinimumSize(QSize(0, 35));
-        lineEdit_2->setMaximumSize(QSize(16777215, 35));
-        lineEdit_2->setFont(font);
-
-        ENgridParam->addWidget(lineEdit_2, 1, 0, 1, 1);
-
-        lineEdit_5 = new QLineEdit(ENscrollAreaParamContents);
-        lineEdit_5->setObjectName(QString::fromUtf8("lineEdit_5"));
-        lineEdit_5->setMinimumSize(QSize(0, 35));
-        lineEdit_5->setMaximumSize(QSize(16777215, 35));
-        lineEdit_5->setFont(font);
-
-        ENgridParam->addWidget(lineEdit_5, 2, 1, 1, 1);
-
         ENltValueParam = new QLabel(ENscrollAreaParamContents);
         ENltValueParam->setObjectName(QString::fromUtf8("ENltValueParam"));
         ENltValueParam->setFont(font);
@@ -243,44 +179,18 @@ public:
         ENltBool->setAlignment(Qt::AlignCenter);
         ENltBool->setWordWrap(true);
 
-        ENgridParam->addWidget(ENltBool, 0, 3, 1, 1);
+        ENgridParam->addWidget(ENltBool, 0, 2, 1, 1);
 
-        horizontalLayout = new QHBoxLayout();
-        horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
-        checkBox = new QCheckBox(ENscrollAreaParamContents);
-        checkBox->setObjectName(QString::fromUtf8("checkBox"));
-        QSizePolicy sizePolicy1(QSizePolicy::Minimum, QSizePolicy::Minimum);
-        sizePolicy1.setHorizontalStretch(0);
-        sizePolicy1.setVerticalStretch(0);
-        sizePolicy1.setHeightForWidth(checkBox->sizePolicy().hasHeightForWidth());
-        checkBox->setSizePolicy(sizePolicy1);
-        checkBox->setMinimumSize(QSize(0, 0));
-        checkBox->setMaximumSize(QSize(60, 16777215));
-        checkBox->setSizeIncrement(QSize(0, 0));
-        checkBox->setBaseSize(QSize(0, 0));
-        checkBox->setLayoutDirection(Qt::LeftToRight);
-        checkBox->setIconSize(QSize(20, 20));
-        checkBox->setCheckable(true);
-        checkBox->setChecked(false);
-        checkBox->setAutoRepeat(false);
-        checkBox->setAutoExclusive(false);
-        checkBox->setTristate(false);
+        ENltNameParam = new QLabel(ENscrollAreaParamContents);
+        ENltNameParam->setObjectName(QString::fromUtf8("ENltNameParam"));
+        ENltNameParam->setFont(font);
 
-        horizontalLayout->addWidget(checkBox);
+        ENgridParam->addWidget(ENltNameParam, 0, 0, 1, 1);
 
+        ENltDelButton = new QLabel(ENscrollAreaParamContents);
+        ENltDelButton->setObjectName(QString::fromUtf8("ENltDelButton"));
 
-        ENgridParam->addLayout(horizontalLayout, 2, 3, 1, 1);
-
-        horizontalLayout_2 = new QHBoxLayout();
-        horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
-        checkBox_2 = new QCheckBox(ENscrollAreaParamContents);
-        checkBox_2->setObjectName(QString::fromUtf8("checkBox_2"));
-        checkBox_2->setMaximumSize(QSize(60, 16777203));
-
-        horizontalLayout_2->addWidget(checkBox_2);
-
-
-        ENgridParam->addLayout(horizontalLayout_2, 1, 3, 1, 1);
+        ENgridParam->addWidget(ENltDelButton, 0, 3, 1, 1);
 
         ENgridParam->setColumnStretch(0, 1);
         ENgridParam->setColumnStretch(1, 2);
@@ -297,6 +207,22 @@ public:
 
         gridLayout->addLayout(ENmaingrid, 0, 0, 1, 1);
 
+        ENhorizontalSaveChanged = new QHBoxLayout();
+        ENhorizontalSaveChanged->setObjectName(QString::fromUtf8("ENhorizontalSaveChanged"));
+        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        ENhorizontalSaveChanged->addItem(horizontalSpacer);
+
+        ENSaveChanged = new QPushButton(DialogEditNodesWindow);
+        ENSaveChanged->setObjectName(QString::fromUtf8("ENSaveChanged"));
+        ENSaveChanged->setMinimumSize(QSize(0, 35));
+        ENSaveChanged->setFont(font1);
+
+        ENhorizontalSaveChanged->addWidget(ENSaveChanged);
+
+
+        gridLayout->addLayout(ENhorizontalSaveChanged, 1, 0, 1, 1);
+
 
         retranslateUi(DialogEditNodesWindow);
 
@@ -312,13 +238,11 @@ public:
         ENLoadCMD->setText(QApplication::translate("DialogEditNodesWindow", "\320\227\320\260\320\263\321\200\321\203\320\267\320\270\321\202\321\214 cmd", nullptr));
         ENAddParam->setText(QApplication::translate("DialogEditNodesWindow", "+", nullptr));
         ENltPathRun->setText(QApplication::translate("DialogEditNodesWindow", "\320\237\321\203\321\202\321\214 \320\272 \320\270\321\201\320\277\320\276\320\273\320\275\321\217\320\265\320\274\320\276\320\274\321\203 \321\204\320\260\320\271\320\273\321\203", nullptr));
-        pushButton_6->setText(QApplication::translate("DialogEditNodesWindow", "-", nullptr));
-        pushButton_5->setText(QApplication::translate("DialogEditNodesWindow", "-", nullptr));
-        ENltNameParam->setText(QApplication::translate("DialogEditNodesWindow", "\320\235\320\260\320\267\320\262\320\260\320\275\320\270\320\265 \320\277\320\260\321\200\320\260\320\274\320\265\321\202\321\200\320\260", nullptr));
         ENltValueParam->setText(QApplication::translate("DialogEditNodesWindow", "\320\227\320\275\320\260\321\207\320\265\320\275\320\270\320\265 \320\277\320\260\321\200\320\260\320\274\320\265\321\202\321\200\320\260", nullptr));
         ENltBool->setText(QApplication::translate("DialogEditNodesWindow", "\320\221\321\213\321\201\321\202\321\200\321\213\320\271 \320\264\320\276\321\201\321\202\321\203\320\277", nullptr));
-        checkBox->setText(QString());
-        checkBox_2->setText(QString());
+        ENltNameParam->setText(QApplication::translate("DialogEditNodesWindow", "\320\235\320\260\320\267\320\262\320\260\320\275\320\270\320\265 \320\277\320\260\321\200\320\260\320\274\320\265\321\202\321\200\320\260", nullptr));
+        ENltDelButton->setText(QString());
+        ENSaveChanged->setText(QApplication::translate("DialogEditNodesWindow", "\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214 \320\270\320\267\320\274\320\265\320\275\320\265\320\275\320\270\321\217", nullptr));
     } // retranslateUi
 
 };

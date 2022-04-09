@@ -237,7 +237,7 @@ class Ui_EditNodeWindow(object):
 
         #self.ENAddParam.clicked.connect(mainwindow.AAA)
         self.i = 3
-        self.ENAddParam.clicked.connect(self.AddParam)
+
 
     def closeEvent(self, event):
         event.ignore()
