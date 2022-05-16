@@ -22,6 +22,7 @@ if __name__ == "__main__":
     MainWindow.InitUI()
 
     MainWindow.show()
+    MainWindow.ClearAndAddFastOptionAllNode()
 
 
 

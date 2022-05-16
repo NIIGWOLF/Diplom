@@ -747,7 +747,6 @@ QPushButton
     padding: 0.23em;
     border-radius: 0.09em;
     outline: none;
-    min-height: 1.1em;
 }
 
 QComboBox:open,
@@ -1866,14 +1865,14 @@ QProgressBar:vertical
 
 QProgressBar:horizontal
 {
-    height: 0.2em;
+    height: 0.4em;
     min-width: 6em;
     text-align: right;
     padding-left: -0.03em;
     padding-right: -0.03em;
     margin-top: 0.2em;
     margin-bottom: 0.2em;
-    margin-right: 1.3em;
+    margin-right: 3.3em;
 }
 
 QProgressBar:vertical

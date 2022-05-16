@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="1aa18518-8e17-4051-a10a-232e452bdddc" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/Diplom/replaceConstParam.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Diplom/fun_dialogeditnodeswindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/Diplom/fun_dialogeditnodeswindow.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Diplom/fun_mainwindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/Diplom/fun_mainwindow.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Diplom/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Diplom/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Diplom/mainwindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/Diplom/mainwindow.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Diplom/nodes.py" beforeDir="false" afterPath="$PROJECT_DIR$/Diplom/nodes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Diplom/profile/temp.pcl" beforeDir="false" afterPath="$PROJECT_DIR$/Diplom/profile/temp.pcl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Diplom/profile/test.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/Diplom/profile/test.pkl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Diplom/stylesheet.qss" beforeDir="false" afterPath="$PROJECT_DIR$/Diplom/stylesheet.qss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Qt/UI/UI.pro" beforeDir="false" afterPath="$PROJECT_DIR$/Qt/UI/UI.pro" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Qt/UI/editnodeswindow.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Qt/UI/editnodeswindow.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Qt/UI/editnodeswindow.ui" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Qt/UI/editnodewindow.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Qt/UI/editnodewindow.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Qt/UI/editnodewindow.ui" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Qt/UI/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Qt/UI/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Qt/UI/mainwindow.ui" beforeDir="false" afterPath="$PROJECT_DIR$/Qt/UI/mainwindow.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Qt/build-UI-Desktop_Qt_5_12_11_MSVC2015_64bit-Debug/Makefile.Debug" beforeDir="false" afterPath="$PROJECT_DIR$/Qt/build-UI-Desktop_Qt_5_12_11_MSVC2015_64bit-Debug/Makefile.Debug" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Qt/build-UI-Desktop_Qt_5_12_11_MSVC2015_64bit-Debug/Makefile.Release" beforeDir="false" afterPath="$PROJECT_DIR$/Qt/build-UI-Desktop_Qt_5_12_11_MSVC2015_64bit-Debug/Makefile.Release" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Qt/build-UI-Desktop_Qt_5_12_11_MSVC2015_64bit-Debug/debug/UI.exe" beforeDir="false" afterPath="$PROJECT_DIR$/Qt/build-UI-Desktop_Qt_5_12_11_MSVC2015_64bit-Debug/debug/UI.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Qt/build-UI-Desktop_Qt_5_12_11_MSVC2015_64bit-Debug/debug/UI.ilk" beforeDir="false" afterPath="$PROJECT_DIR$/Qt/build-UI-Desktop_Qt_5_12_11_MSVC2015_64bit-Debug/debug/UI.ilk" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Qt/build-UI-Desktop_Qt_5_12_11_MSVC2015_64bit-Debug/debug/UI.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/Qt/build-UI-Desktop_Qt_5_12_11_MSVC2015_64bit-Debug/debug/UI.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Qt/build-UI-Desktop_Qt_5_12_11_MSVC2015_64bit-Debug/debug/UI.vc.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/Qt/build-UI-Desktop_Qt_5_12_11_MSVC2015_64bit-Debug/debug/UI.vc.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Qt/build-UI-Desktop_Qt_5_12_11_MSVC2015_64bit-Debug/debug/main.obj" beforeDir="false" afterPath="$PROJECT_DIR$/Qt/build-UI-Desktop_Qt_5_12_11_MSVC2015_64bit-Debug/debug/main.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Qt/build-UI-Desktop_Qt_5_12_11_MSVC2015_64bit-Debug/debug/mainwindow.obj" beforeDir="false" afterPath="$PROJECT_DIR$/Qt/build-UI-Desktop_Qt_5_12_11_MSVC2015_64bit-Debug/debug/mainwindow.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Qt/build-UI-Desktop_Qt_5_12_11_MSVC2015_64bit-Debug/debug/stylesheet.qss" beforeDir="false" afterPath="$PROJECT_DIR$/Qt/build-UI-Desktop_Qt_5_12_11_MSVC2015_64bit-Debug/debug/stylesheet.qss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Qt/build-UI-Desktop_Qt_5_12_11_MSVC2015_64bit-Debug/ui_mainwindow.h" beforeDir="false" afterPath="$PROJECT_DIR$/Qt/build-UI-Desktop_Qt_5_12_11_MSVC2015_64bit-Debug/ui_mainwindow.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Qt/editnodeswindow.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Qt/editnodeswindow.ui" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Qt/editnodewindow.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Qt/editnodewindow.ui" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Qt/mainwindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/Qt/mainwindow.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Qt/mainwindow.ui" beforeDir="false" afterPath="$PROJECT_DIR$/Qt/mainwindow.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Qt/transfer.bat" beforeDir="false" afterPath="$PROJECT_DIR$/Qt/transfer.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/макет2.pdn" beforeDir="false" afterPath="$PROJECT_DIR$/макет2.pdn" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="27jtZfbWdHmejaVVXajDzO3W2WY" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="1aa18518-8e17-4051-a10a-232e452bdddc" name="Default Changelist" comment="" />
+      <created>1649845380306</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1649845380306</updated>
+      <workItem from="1649845386122" duration="18000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="2" />
+  </component>
+</project>

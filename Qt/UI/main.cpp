@@ -1,4 +1,3 @@
-#include "EditNodeWindow.h"
 #include "mainwindow.h"
 #include <QStyleFactory>
 #include <QSettings>

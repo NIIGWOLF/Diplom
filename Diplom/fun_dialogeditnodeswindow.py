@@ -24,7 +24,7 @@ class Event_DialogEditNodesWindow(QtWidgets.QDialog):
         self.list = []
         self.setWindowFlags(self.windowFlags() & ~QtCore.Qt.WindowContextHelpButtonHint)
 
-    def ShowUI(self, node: nodes.Node):
+    def ShowUI(self, node: nodes.Node, folder):
         self.node = node
         self.ui.ENeNameNode.setText(node.name)
         self.ui.ENePathRun.setText(node.run)
@@ -37,13 +37,17 @@ class Event_DialogEditNodesWindow(QtWidgets.QDialog):
         if not os.path.exists("nodes"): os.makedirs("nodes")
         filename, ok = QtWidgets.QFileDialog.getSaveFileName(self,"Сохранить файл","./nodes","All Files(*.pkl)")
         if ok:
-            pickle.dump(self.__ParsFormToNode(), open(filename, 'wb'))
+            oFile=open(filename, 'wb')
+            pickle.dump(self.__ParsFormToNode(), oFile)
+            oFile.close()
 
     def __LoadFile(self):
         if not os.path.exists("nodes"): os.makedirs("nodes")
         filename, ok = QtWidgets.QFileDialog.getOpenFileName(self, "Открыть файл", "./nodes", "All Files(*.pkl)")
         if ok:
-            node = pickle.load(open(filename, 'rb'))
+            iFile=open(filename, 'rb')
+            node = pickle.load(iFile)
+            iFile.close()
             self.__ParsNodeToForm(node)
 
     def __LoadCMD(self):
@@ -129,8 +133,6 @@ class Event_DialogEditNodesWindow(QtWidgets.QDialog):
 
 
     def __AddParam(self,editText1, editText2, boolCheck: bool):
-        print("add")
-
         _translate = QtCore.QCoreApplication.translate
         font = QtGui.QFont()
         font.setPointSize(12)

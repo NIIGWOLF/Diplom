@@ -1,3 +1,7 @@
+image_test
+Diplom/logs
+Qt/build-UI-Desktop_Qt_5_12_11_MSVC2015_64bit-Debug
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

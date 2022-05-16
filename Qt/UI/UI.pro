@@ -10,21 +10,18 @@ CONFIG += c++11
 
 SOURCES += \
     dialogeditnodeswindow.cpp \
-    editnodeswindow.cpp \
-    editnodewindow.cpp \
+    dialogrunbuild.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
     dialogeditnodeswindow.h \
-    editnodeswindow.h \
-    editnodewindow.h \
+    dialogrunbuild.h \
     mainwindow.h
 
 FORMS += \
     dialogeditnodeswindow.ui \
-    editnodeswindow.ui \
-    editnodewindow.ui \
+    dialogrunbuild.ui \
     mainwindow.ui
 
 # Default rules for deployment.
