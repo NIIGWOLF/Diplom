@@ -31,7 +31,8 @@ class Event_MainWindow(QtWidgets.QMainWindow):
         self.ui.PDnew.clicked.connect(self.__DelAllNode)
         self.ui.PDsave.clicked.connect(self.__SaveFile)
         self.ui.PDload.clicked.connect(self.__LoadFile)
-        self.ui.PLallRun.clicked.connect(lambda: self.__RunThreadAllFolderBuild(datetime.datetime.now()))
+        #self.ui.PLallRun.clicked.connect(lambda: self.__RunThreadAllFolderBuild(datetime.datetime.now()))
+        self.ui.PLallRun.clicked.connect(lambda: self.test())
         self.ui.tabWidget.currentChanged.connect(self.onChangeTabWidget)
 
         self.setAcceptDrops(True)
@@ -46,9 +47,8 @@ class Event_MainWindow(QtWidgets.QMainWindow):
             ifile.close()
             self.__ParsNodesToForm(list)
 
-    def isMeshroomExsist(self):
-        if not os.path.exists(self.ui.eMeshroom):
-            QtWidgets.QMessageBox.information("Title", "Content")
+    def test(self):
+        print()
 
     def onChangeTabWidget(self, i):
         if (i==0):
