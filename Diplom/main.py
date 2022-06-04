@@ -10,6 +10,7 @@ import fun_mainwindow
 import mainwindow
 
 
+
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
 
@@ -17,6 +18,7 @@ if __name__ == "__main__":
     file.open(QtCore.QFile.ReadOnly | QtCore.QFile.Text)
     stream = QtCore.QTextStream(file)
     app.setStyleSheet(stream.readAll())
+
 
     MainWindow = fun_mainwindow.Event_MainWindow()
     MainWindow.InitUI()

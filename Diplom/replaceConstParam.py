@@ -5,11 +5,25 @@ from PyQt5 import QtWidgets
 
 class ReplaceConstParam:
     pathMeshroom=""
+    path3DObject=""
+
+    @staticmethod
+    def ReplaceMeshroom(folder):
+        return ReplaceConstParam.ReplaceParam(ReplaceConstParam.pathMeshroom,folder)
+
+    @staticmethod
+    def Replace3DObject(folder):
+        return ReplaceConstParam.ReplaceParam(ReplaceConstParam.path3DObject,folder)
+
 
     @staticmethod
     def ReplaceParam(text, imageFolder):
         if not os.path.exists(ReplaceConstParam.pathMeshroom):
-            QtWidgets.QMessageBox.critical("Ошибка", "Путь к Meshroom.exe указан не верно")
+            msgBox = QtWidgets.QMessageBox()
+            msgBox.setIcon(QtWidgets.QMessageBox.Critical)
+            msgBox.setText("Путь к Meshroom.exe указан не верно")
+            msgBox.setWindowTitle("Ошибка")
+            msgBox.exec();
             return 1
 
         text = text.replace("{PreImageFolder}", os.path.dirname(imageFolder))

@@ -72,8 +72,8 @@ class Ui_DialogRunBuild(object):
     def retranslateUi(self, DialogRunBuild):
         _translate = QtCore.QCoreApplication.translate
         DialogRunBuild.setWindowTitle(_translate("DialogRunBuild", "Построение mash-объекта"))
-        self.lFolder.setText(_translate("DialogRunBuild", "Процес обработки папок:"))
-        self.lNode.setText(_translate("DialogRunBuild", "Прогрес выполнения нодов:"))
+        self.lFolder.setText(_translate("DialogRunBuild", "Процесс обработки папок:"))
+        self.lNode.setText(_translate("DialogRunBuild", "Прогресс выполнения нодов:"))
         self.pbFolder.setFormat(_translate("DialogRunBuild", "%v/%m"))
         self.pbNode.setFormat(_translate("DialogRunBuild", "%v/%m"))
         self.lState.setText(_translate("DialogRunBuild", "Статус:"))

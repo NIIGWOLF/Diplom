@@ -1,8 +1,8 @@
 import sys, os
 import re
-import replaceConstParam
 import subprocess
 import datetime
+from replaceConstParam import ReplaceConstParam
 
 
 
@@ -48,7 +48,7 @@ class Node:
 
     def searchAndCreateFolder(self,folder):
         for key in self.dict:
-            path = replaceConstParam.ReplaceConstParam.ReplaceParam(self.dict.get(key)[0],folder).strip("'").strip('"')
+            path = ReplaceConstParam.ReplaceParam(self.dict.get(key)[0],folder).strip("'").strip('"')
             path = os.path.normpath(path)
             if (re.match(r'([A-Za-z]:\\)((?:.*\\)?)', path)):
                 if not(os.path.exists(path)):
@@ -67,7 +67,7 @@ class Node:
 
     def runBuild(self,folder,DialogRunBuild,dt: datetime.datetime):
 
-        if not(os.path.exists(replaceConstParam.ReplaceConstParam.ReplaceParam(self.run,folder))):
+        if not(os.path.exists(ReplaceConstParam.ReplaceParam(self.run,folder))):
             return 1;
 
         if not os.path.exists("logs\\" + os.path.basename(folder)+"\\"+self.name): os.makedirs("logs\\" + os.path.basename(folder)+"\\"+self.name)
@@ -76,7 +76,7 @@ class Node:
         ofile=open("logs\\" + os.path.basename(folder)+"\\"+self.name+"\\log"+dt.strftime(" %d-%m-%y %H.%M.%S")+".txt", 'w')
 
         a = self.output()
-        cmdLine = replaceConstParam.ReplaceConstParam.ReplaceParam(self.output(),folder)
+        cmdLine = ReplaceConstParam.ReplaceParam(self.output(),folder)
         self.searchAndCreateFolder(folder)
 
         warn = 0

@@ -24,7 +24,7 @@ class Event_DialogEditNodesWindow(QtWidgets.QDialog):
         self.list = []
         self.setWindowFlags(self.windowFlags() & ~QtCore.Qt.WindowContextHelpButtonHint)
 
-    def ShowUI(self, node: nodes.Node, folder):
+    def ShowUI(self, node: nodes.Node):
         self.node = node
         self.ui.ENeNameNode.setText(node.name)
         self.ui.ENePathRun.setText(node.run)
@@ -51,7 +51,9 @@ class Event_DialogEditNodesWindow(QtWidgets.QDialog):
             self.__ParsNodeToForm(node)
 
     def __LoadCMD(self):
-        text, ok = QtWidgets.QInputDialog.getText(self, 'Добавление через команду cmd', 'Введите команду для запуска из командной строки')
+        dialogLoadCMD = QtWidgets.QInputDialog()
+        #dialogLoadCMD.setWindowFlags(self.windowFlags() & ~QtCore.Qt.WindowContextHelpButtonHint)
+        text, ok = dialogLoadCMD.getText(self, 'Добавление через команду cmd', 'Введите команду для запуска из командной строки')
         if ok:
             self.__ParsNodeToForm(nodes.pars(text))
 
@@ -63,13 +65,14 @@ class Event_DialogEditNodesWindow(QtWidgets.QDialog):
         if self.ui.ENSaveChanged.isEnabled():
             reply = QtWidgets.QMessageBox.question(
                 self,
-                "Exit",
+                "Закрыть не сохраняя?",
                 "Изменения не сохранены. Вы уверены, что хотите закрыть окно редактирования без сохранения?",
                 QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
                 QtWidgets.QMessageBox.No
             )
             if reply != QtWidgets.QMessageBox.Yes:
                 event.ignore()
+                return
 
         self.__DelAllParam()
         event.accept()

@@ -1,15 +1,18 @@
-
-
 import mainwindow
 import fun_dialogeditnodeswindow
 import fun_dialogrunbuild
 import nodes
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets, Qt3DCore, Qt3DRender
 import sys, os
 import pickle
 import subprocess
 import datetime
 from threading import Thread
+from replaceConstParam import ReplaceConstParam
+from vedo import Mesh
+import vedo
+
+
 
 class Event_MainWindow(QtWidgets.QMainWindow):
     def InitUI(self):
@@ -20,6 +23,7 @@ class Event_MainWindow(QtWidgets.QMainWindow):
         self.listFastOption = []
         self.listFolder = []
         self.isChangedFastOption = False;
+        self.iconEdit = QtGui.QIcon('edit.png')
 
         self.DialogWindow = fun_dialogeditnodeswindow.Event_DialogEditNodesWindow()
         self.DialogWindow.InitUI()
@@ -31,9 +35,10 @@ class Event_MainWindow(QtWidgets.QMainWindow):
         self.ui.PDnew.clicked.connect(self.__DelAllNode)
         self.ui.PDsave.clicked.connect(self.__SaveFile)
         self.ui.PDload.clicked.connect(self.__LoadFile)
-        #self.ui.PLallRun.clicked.connect(lambda: self.__RunThreadAllFolderBuild(datetime.datetime.now()))
-        self.ui.PLallRun.clicked.connect(lambda: self.test())
+        self.ui.PLallRun.clicked.connect(lambda: self.__RunThreadAllFolderBuild(datetime.datetime.now()))
         self.ui.tabWidget.currentChanged.connect(self.onChangeTabWidget)
+        self.ui.eMeshroom.textChanged.connect(lambda:self.__TextChangedOption(0))
+        self.ui.e3d.textChanged.connect(lambda:self.__TextChangedOption(1))
 
         self.setAcceptDrops(True)
 
@@ -41,14 +46,23 @@ class Event_MainWindow(QtWidgets.QMainWindow):
 
         if not os.path.exists("logs"): os.makedirs("logs")
 
-        if os.path.exists("./profile/temp.pcl"):
-            ifile = open("./profile/temp.pcl", 'rb')
+        if os.path.exists("./profile/temp.pkl"):
+            ifile = open("./profile/temp.pkl", 'rb')
             list = pickle.load(ifile)
             ifile.close()
             self.__ParsNodesToForm(list)
 
-    def test(self):
-        print()
+        if os.path.exists("option.pkl"):
+            ifile = open("option.pkl", 'rb')
+            op = pickle.load(ifile)
+            ifile.close()
+            self.ui.eMeshroom.setText(op[0])
+            self.ui.e3d.setText(op[1])
+            ReplaceConstParam.pathMeshroom=op[0]
+            ReplaceConstParam.path3DObject=op[1]
+
+        self.mesh = Mesh("D:/Diplom/Diplom/image_test/buildmini3/Texturing/texturedMesh.obj", )
+
 
     def onChangeTabWidget(self, i):
         if (i==0):
@@ -59,9 +73,13 @@ class Event_MainWindow(QtWidgets.QMainWindow):
 
     def closeEvent(self,event):
         if not os.path.exists("profile"): os.makedirs("profile")
-        oFile=open("./profile/temp.pcl", 'wb')
-        pickle.dump(self.listNode, oFile)
-        oFile.close()
+        o1File=open("./profile/temp.pkl", 'wb')
+        pickle.dump(self.listNode, o1File)
+        o1File.close()
+
+        o2File=open("option.pkl", 'wb')
+        pickle.dump([ReplaceConstParam.pathMeshroom,ReplaceConstParam.path3DObject], o2File)
+        o2File.close()
 
     def dragEnterEvent(self, e):
         if e.mimeData().hasText():
@@ -104,6 +122,7 @@ class Event_MainWindow(QtWidgets.QMainWindow):
     def __RunOneFolderBuild(self,fl,dt):
         if not os.path.exists("logs\\"+os.path.basename(fl[0])): os.makedirs("logs\\"+os.path.basename(fl[0]))
         fl[1].setValue(0)
+        fl[2].setText("Статус: в обработке")
         for node in self.listNode:
             if (self.DialogRunBuild.state==1): #process stop
                 self.DialogRunBuild.ChangedStateStop()
@@ -111,16 +130,23 @@ class Event_MainWindow(QtWidgets.QMainWindow):
                 if (self.DialogRunBuild.isEnd):
                     return
             codeRun=node.runBuild(fl[0],self.DialogRunBuild,dt)
-            if (codeRun!=0):
+            if (codeRun!=0 and codeRun!=4):
                 print(codeRun,': Для нода "',node.name,'" указан не корректный путь!')
                 self.DialogRunBuild.ChangedStateComplite()
+                fl[2].setText("Статус: ошибка обработки")
+                return
+            if (codeRun==4):
+                fl[2].setText("Статус: обработка отменена")
                 return
             if (self.DialogRunBuild.isEnd):
+                fl[2].setText("Статус: обработка отменена")
                 return
             self.DialogRunBuild.AddProgressBarNode()
             fl[1].setValue(fl[1].value()+1)
+        fl[2].setText("Статус: обработано")
         self.DialogRunBuild.AddProgressBarFolder()
         self.DialogRunBuild.ChangedStateComplite()
+
 
     def __RunThreadOneFolderBuild(self,fl,dt):
         th = Thread(target=self.__RunOneFolderBuild, args=(fl, dt,))
@@ -288,9 +314,12 @@ class Event_MainWindow(QtWidgets.QMainWindow):
             label_1.setText(_translate("MainWindow", "Новый нод"))
         else:
             label_1.setText(_translate("MainWindow", node.name))
-        pushButton_7.setText(_translate("MainWindow", "^"))
-        pushButton_8.setText(_translate("MainWindow", "v"))
-        pushButton_9.setText(_translate("MainWindow", "R"))
+
+
+        pushButton_9.setIcon((self.iconEdit))
+        pushButton_7.setText(_translate("MainWindow", "▲"))
+        pushButton_8.setText(_translate("MainWindow", "▼"))
+        #pushButton_9.setText(_translate("MainWindow", "R"))
         pushButton_10.setText(_translate("MainWindow", "-"))
 
         if (not(flag)):
@@ -375,6 +404,17 @@ class Event_MainWindow(QtWidgets.QMainWindow):
     # endregion
 
     # region PILeft
+    def __View3D(self,folder):
+        path = ReplaceConstParam.Replace3DObject(folder)
+        if (path==1): return
+        if not os.path.exists(path):
+            return
+
+        vp = vedo.Plotter()
+        s1 = vedo.load(path + "/texturedMesh.obj").texture(path + "/texture_1001.png", scale=1)
+        vp.show(s1, resetcam=False, interactive=1)
+
+
     def __DelImageFolder(self,folder,groupBox):
         groupBox.deleteLater()
         for fl in self.listFolder:
@@ -494,17 +534,27 @@ class Event_MainWindow(QtWidgets.QMainWindow):
         TempLeftpushButton_Warning.setVisible(False)
         TempLeftpushButton_Dir.clicked.connect(lambda: subprocess.Popen(f'explorer "{folder}"'))
         TempLeftpushButton_Del.clicked.connect(lambda: self.__DelImageFolder(folder,TempLeftgroupBox))
-        TempLeftpushButton_Run.clicked.connect(lambda: self.__RunThreadOneFolderBuild([folder,TempLeftprogressBar],datetime.datetime.now()))
-        self.listFolder.append([folder,TempLeftprogressBar])
+        TempLeftpushButton_Run.clicked.connect(lambda: self.__RunThreadOneFolderBuild([folder,TempLeftprogressBar,TempLeftlabel],datetime.datetime.now()))
+        TempLeftpushButton_3D.clicked.connect(lambda: self.__View3D(folder))
+        self.listFolder.append([folder,TempLeftprogressBar,TempLeftlabel])
 
 
         _translate = QtCore.QCoreApplication.translate
         TempLeftgroupBox.setTitle(os.path.basename(folder))
         TempLeftprogressBar.setFormat(_translate("MainWindow", "%v/%m"))
-        TempLeftlabel.setText(_translate("MainWindow", "Статус:"))
+        TempLeftlabel.setText(_translate("MainWindow", "Статус: не обработано"))
         TempLeftpushButton_Warning.setText(_translate("MainWindow", "!?"))
         TempLeftpushButton_Run.setText(_translate("MainWindow", ">"))
         TempLeftpushButton_3D.setText(_translate("MainWindow", "3D"))
         TempLeftpushButton_Dir.setText(_translate("MainWindow", "..."))
         TempLeftpushButton_Del.setText(_translate("MainWindow", "-"))
+    # endregion
+
+    # region PO
+    def __TextChangedOption(self,i): #0 pathMeshroom/1 path3d
+        if(i):
+            ReplaceConstParam.path3DObject = self.ui.e3d.text()
+        else:
+            ReplaceConstParam.pathMeshroom = self.ui.eMeshroom.text()
+
     # endregion
