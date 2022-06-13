@@ -1,18 +1,14 @@
-import sys, os
+import os
 import re
 import subprocess
 import datetime
 from replaceConstParam import ReplaceConstParam
-
-
-
 def SilentMkdir(theDir):
     try:
         os.mkdir(theDir)
     except:
         pass
     return 0
-
 def pars(str):
     arr = str.split()
     currentParam = ''
@@ -31,21 +27,16 @@ def pars(str):
     dict[currentParam] = [strParam.strip(), 0]
     node = Node(arr[0], arr[0], dict)
     return node
-
-
-
 class Node:
     def __init__(self, name, run, dict):
         self.name = name
         self.run = run
         self.dict = dict
-
     def output(self):
         str = self.run
         for key in self.dict:
             str += ' ' + key + ' ' + self.dict.get(key)[0]
         return str
-
     def searchAndCreateFolder(self,folder):
         for key in self.dict:
             path = ReplaceConstParam.ReplaceParam(self.dict.get(key)[0],folder).strip("'").strip('"')
@@ -58,29 +49,20 @@ class Node:
                     else:
                         print("Create: ", path)
                         os.makedirs(path)
-
-
     def replace(self,node):
         self.name=node.name
         self.run=node.run
         self.dict=node.dict
-
     def runBuild(self,folder,DialogRunBuild,dt: datetime.datetime):
-
         if not(os.path.exists(ReplaceConstParam.ReplaceParam(self.run,folder))):
             return 1;
-
         if not os.path.exists("logs\\" + os.path.basename(folder)+"\\"+self.name): os.makedirs("logs\\" + os.path.basename(folder)+"\\"+self.name)
-
         print(dt.strftime("log %d-%m-%y %H.%M.%S"))
         ofile=open("logs\\" + os.path.basename(folder)+"\\"+self.name+"\\log"+dt.strftime(" %d-%m-%y %H.%M.%S")+".txt", 'w')
-
         a = self.output()
         cmdLine = ReplaceConstParam.ReplaceParam(self.output(),folder)
         self.searchAndCreateFolder(folder)
-
         warn = 0
-
         try:
             print(cmdLine)
             ofile.writelines(cmdLine)
@@ -94,15 +76,11 @@ class Node:
                     if line.__contains__("[fatal]"):
                         print("fatal error")
                         warn = 2
-
             #(out, err) = proc.communicate()
-
         except subprocess.CalledProcessError as err:
             print(err)
             ofile.writelines(err)
             return 3
-
         finally:
             ofile.close()
-
         return warn
